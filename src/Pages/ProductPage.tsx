@@ -1,18 +1,23 @@
-import { HOODIE, POLO, SWEATSHIRTS, TSHIRT } from "../assets";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setProducts } from "../redux/productSlice"; // adjust path as needed
+import { RootState } from "../redux/"; // your store's root state
+import { products as mockProducts } from "../constant/Product"; // adjust path
+import { Navbar, Footer } from "../components";
 import { IoIosSearch } from "react-icons/io";
-import { Footer, Navbar } from "../components";
 
 
 
-const products = [
-  { name: "Hoodie(black, full sleeve)", price: "₹562", image: HOODIE },
-  { name: "Polo(Red, sleeveless)", price: "₹562", image: POLO },
-  { name: "Tshirt(Violet, crop full sleeve)", price: "₹562", image: TSHIRT },
-  { name: "Sweat(Green, crop sleeveless)", price: "₹562", image: SWEATSHIRTS },
-];
 
 
 export const ProductPage = () => {
+  const dispatch = useDispatch();
+
+  const products = useSelector((state: RootState) => state.products.products);
+
+  useEffect(() => {
+    dispatch(setProducts(mockProducts));
+  }, [dispatch]);
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -20,7 +25,9 @@ export const ProductPage = () => {
       <main className="w-[90%] mx-auto flex-grow px-6 md:px-20 py-10">
         <h2 className="text-3xl font-bold text-center mb-14">Products</h2>
         <div className="flex justify-between items-center mb-12">
-          <p className="text-custom-grey text-xl">showing 1–12 of 35 results</p>
+        <p className="text-custom-grey text-xl">
+            showing 1–{products.length} of {products.length} results
+          </p>
           <div className="relative">
             <input
               type="text"
@@ -33,8 +40,8 @@ export const ProductPage = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-          {products.map((product, index) => (
-            <div key={index} className="flex flex-col items-center text-center">
+          {products.map((product) => (
+            <div key={product.id} className="flex flex-col items-center text-center">
             <img
               src={product.image}
               alt={product.name}
@@ -42,15 +49,15 @@ export const ProductPage = () => {
             />
             
            
-            <h3 className="mt-5 text-xl font-medium mb-3 ">{product.name}</h3>
+            <h3 className="mt-5 text-xl font-medium mb-3 ">{product.name}({product.color},{product.type})</h3>
             
             
-            <p className="text-custom-grey text-xl mb-3">{product.price}</p>
+            <p className="text-custom-grey text-xl mb-3">₹{product.price}</p>
           
             
             <div className="flex items-center justify-center gap-3 mt-2">
               <button className="w-10 h-10 flex items-center justify-center rounded-full border">-</button>
-              <span className="w-10 h-10 border px-3 py-1">{1}</span>
+              <span className="w-10 h-10 border px-3 py-1">{product.quantity}</span>
               <button className="w-10 h-10 flex items-center justify-center rounded-full border">+</button>
             </div>
           </div>

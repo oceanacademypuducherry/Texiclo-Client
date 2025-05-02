@@ -1,6 +1,6 @@
 import { KIDS, MENS, NEWCOLLECTION, WOMENS } from "../assets";
 
-export const collections = [
+export const Collections  = [
     { id: 1, name: 'new collection', image: NEWCOLLECTION, categoryId: 1 },
     { id: 2, name: 'mens', image: MENS, categoryId: 2 },
     { id: 3, name: 'womens', image: WOMENS, categoryId: 3 },
