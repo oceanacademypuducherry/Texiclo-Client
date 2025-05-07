@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCategories } from "../redux/categorySlice"; // path may vary
 import { RootState } from "../app/store"; // your store type
 import { categoryData } from "../constant/category"; // path to your mock JSON
-
+import { useNavigate } from "react-router-dom";
 import { IoIosSearch } from "react-icons/io";
 import { Footer, Navbar } from "../components";
 
 export const CategoryPage = () => {
   const dispatch = useDispatch();
   const categories = useSelector((state: RootState) => state.categories.categories);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(setCategories(categoryData));
@@ -35,8 +36,10 @@ export const CategoryPage = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-          {categories.map((category, index) => (
-            <div key={index} className="flex flex-col items-center text-xl">
+          {categories.map((category) => (
+            <div key={category.id} className="flex flex-col items-center text-xl"
+            onClick={() => navigate(`/products/${category.id}`)} 
+            >
               <img
                 src={category.image}
                 alt={category.name}
@@ -59,3 +62,7 @@ export const CategoryPage = () => {
     </div>
   );
 };
+
+
+
+

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Collection {
   id: number;
-  categoryId: number;
+  categoryId?: number;
   name: string;
   image: string;
 }

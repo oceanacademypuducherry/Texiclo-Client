@@ -10,6 +10,9 @@ export const Collection = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+ 
+  
+
   const collections = useSelector((state: RootState) => state.collections.collections);
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -57,14 +60,18 @@ export const Collection = () => {
 
       <div className="overflow-hidden">
         <div ref={scrollRef} className={`flex gap-6 overflow-x-auto scroll-smooth no-scrollbar ${collections.length < 5 ? "justify-center" : ""}`}>
-          {collections.map((item) => (
-            <div key={item.id} className="flex-shrink-0 w-[250px] collection-card">
-              <div className="relative rounded-xl overflow-hidden w-full h-[300px]">
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                <h3 className="absolute bottom-4 left-4 text-white text-xl font-semibold z-10">
-                  {item.name}
-                </h3>
-              </div>
+          {collections.map((collection) => (
+            <div key={collection.id} className="flex-shrink-0 w-[250px] collection-card">
+              <div
+  className="relative rounded-xl overflow-hidden w-full h-[300px] cursor-pointer"
+  onClick={() => navigate(`/products/?categoryId=${collection.id}`)}
+>
+  <img src={collection.image} alt={collection.name} className="w-full h-full object-cover" />
+  <h3 className="absolute bottom-4 left-4 text-white text-xl font-semibold z-10">
+    {collection.name}
+  </h3>
+</div>
+
             </div>
           ))}
 

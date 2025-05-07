@@ -16,24 +16,24 @@ export const products = [
   },
   {
     id: 2,
-    name: "Oversized Hoodie",
+    name: "Oversized",
     image: HOODIE,
     color: "Gray",
     type: "sleeveless",
     price: 1199,
     quantity: 2,
-    categoryId: 2,
+    categoryId: 8,
     collectionId: 2
   },
   {
     id: 3,
-    name: "Printed Sweatshirt",
+    name: "Sweatshirt",
     image: TSHIRT,
     color: "White",
     type: "crop full sleeve",
     price: 999,
     quantity: 1,
-    categoryId: 3,
+    categoryId: 4,
     collectionId: 3
   },
   {
@@ -165,7 +165,7 @@ export const products = [
     type: "crop full sleeveless",
     price: 799,
     quantity: 1,
-    categoryId: 1,
+    categoryId: 7,
     collectionId: 1
   },
   {
@@ -176,7 +176,7 @@ export const products = [
     type: "crop full sleeveless",
     price: 799,
     quantity: 1,
-    categoryId: 1,
+    categoryId: 4,
     collectionId: 1
   },
   {
@@ -187,7 +187,7 @@ export const products = [
     type: "crop full sleeveless",
     price: 799,
     quantity: 1,
-    categoryId: 1,
+    categoryId: 7,
     collectionId: 1
   },
   {
@@ -198,7 +198,7 @@ export const products = [
     type: "crop full sleeveless",
     price: 799,
     quantity: 1,
-    categoryId: 1,
+    categoryId: 4,
     collectionId: 1
   },
   {
@@ -209,18 +209,18 @@ export const products = [
     type: "crop full sleeveless",
     price: 799,
     quantity: 1,
-    categoryId: 1,
+    categoryId: 4,
     collectionId: 1
   },
   {
     id: 20,
-    name: "Sweatshirt",
+    name: "T-shirt",
     image: HOODIE,
     color: "Blue",
     type: "crop full sleeveless",
     price: 799,
     quantity: 1,
-    categoryId: 1,
+    categoryId: 3,
     collectionId: 1
   },
   {
@@ -231,7 +231,7 @@ export const products = [
     type: "crop full sleeveless",
     price: 799,
     quantity: 1,
-    categoryId: 1,
+    categoryId: 5,
     collectionId: 1
   },
   {
@@ -242,18 +242,18 @@ export const products = [
     type: "crop full sleeveless",
     price: 799,
     quantity: 1,
-    categoryId: 1,
+    categoryId: 5,
     collectionId: 1
   },
   {
     id: 23,
-    name: "CropTop",
+    name: "Tank Top",
     image: SWEATSHIRTS,
     color: "Blue",
     type: "crop full sleeveless",
     price: 799,
     quantity: 1,
-    categoryId: 1,
+    categoryId: 6,
     collectionId: 1
   },
   {
@@ -264,7 +264,7 @@ export const products = [
     type: "crop full sleeveless",
     price: 799,
     discount: 10,
-    categoryId: 1,
+    categoryId: 3,
     collectionId: 1
   },
   {
@@ -275,7 +275,7 @@ export const products = [
     type: "crop full sleeveless",
     price: 799,
     quantity: 1,
-    categoryId: 1,
+    categoryId: 3,
     collectionId: 1
   },
   {
@@ -286,7 +286,7 @@ export const products = [
     type: "crop full sleeveless",
     price: 799,
     quantity: 1,
-    categoryId: 1,
+    categoryId: 3,
     collectionId: 1
   },
   {
@@ -297,7 +297,7 @@ export const products = [
     type: "crop full sleeveless",
     price: 799,
     discount: 10,
-    categoryId: 1,
+    categoryId: 3,
     collectionId: 1
   },
   {
@@ -308,7 +308,7 @@ export const products = [
     type: "crop full sleeveless",
     price: 799,
     quantity: 1,
-    categoryId: 1,
+    categoryId: 2,
     collectionId: 1
   },
   {
@@ -319,7 +319,7 @@ export const products = [
     type: "crop full sleeveless",
     price: 799,
     quantity: 1,
-    categoryId: 1,
+    categoryId: 2,
     collectionId: 1
   },
   {
@@ -330,7 +330,7 @@ export const products = [
     type: "crop full sleeveless",
     price: 799,
     quantity: 6,
-    categoryId: 1,
+    categoryId: 2,
     collectionId: 1
   }
   

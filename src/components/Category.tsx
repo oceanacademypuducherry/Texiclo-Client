@@ -14,7 +14,7 @@ export const Product = () => {
 
   const categories = useSelector((state: RootState) => state.categories.categories);
 
-  // Load mock data on component mount
+
   useEffect(() => {
     dispatch(setCategories(categoryData));
   }, [dispatch]);
@@ -54,18 +54,20 @@ export const Product = () => {
             className="flex gap-0 overflow-x-auto scroll-smooth no-scrollbar"
           >
             {categories.map((category) => (
-              <div
-                key={category.id}
-                className="product-card flex-shrink-0 w-[250px] rounded-xl overflow-hidden text-center"
-              >
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  className="w-full h-72 object-contain rounded-xl"
-                />
-                <p className="mt-3 font-medium text-[20px]">{category.name}</p>
-              </div>
-            ))}
+  <div
+    key={category.id}
+    className="product-card flex-shrink-0 w-[250px] rounded-xl overflow-hidden text-center cursor-pointer hover:shadow-lg transition"
+    onClick={() => navigate(`/products/?categoryId=${category.id}`)} 
+  >
+    <img
+      src={category.image}
+      alt={category.name}
+      className="w-full h-72 object-contain rounded-xl"
+    />
+    <p className="mt-3 font-medium text-[20px]">{category.name}</p>
+  </div>
+))}
+
 
             <a
               href="/category"
