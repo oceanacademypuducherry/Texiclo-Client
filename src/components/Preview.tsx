@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { PREVIEW } from "../assets";
+import { PREVIEW } from "../assets"; // plain t-shirt image
 
 export const Preview: React.FC = () => {
-  const positions: string[] = [
+  const positions = [
     "left chest",
     "center chest",
     "full front",
@@ -16,6 +16,7 @@ export const Preview: React.FC = () => {
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<Record<string, string>>({});
   const [checkedPositions, setCheckedPositions] = useState<Record<string, boolean>>({});
+  const [currentSlide, setCurrentSlide] = useState<number>(-1); // -1 shows plain t-shirt
 
   useEffect(() => {
     const stored = localStorage.getItem("uploadedImages");
@@ -32,10 +33,40 @@ export const Preview: React.FC = () => {
   };
 
   const handleCheckboxChange = (position: string, checked: boolean) => {
-    setCheckedPositions((prev) => ({
-      ...prev,
+    const updatedChecked = {
+      ...checkedPositions,
       [position]: checked,
-    }));
+    };
+    setCheckedPositions(updatedChecked);
+
+    const validPositions = getConfiguredPreviews(updatedChecked, selectedImages);
+
+    if (checked && selectedImages[position]) {
+      const newIndex = validPositions.indexOf(position);
+      setCurrentSlide(newIndex);
+    } else if (!checked) {
+      const currentPos = getConfiguredPreviews(updatedChecked, selectedImages)[currentSlide];
+      if (!currentPos) setCurrentSlide(-1);
+    }
+  };
+
+  const getConfiguredPreviews = (
+    checked = checkedPositions,
+    selected = selectedImages
+  ) => positions.filter((pos) => checked[pos] && selected[pos]);
+
+  const previews = getConfiguredPreviews();
+  const totalSlides = previews.length;
+  const currentPosition = currentSlide >= 0 && previews[currentSlide];
+
+  const handlePrev = () => {
+    if (totalSlides === 0) return;
+    setCurrentSlide((prev) => (prev <= 0 ? totalSlides - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    if (totalSlides === 0) return;
+    setCurrentSlide((prev) => (prev >= totalSlides - 1 ? 0 : prev + 1));
   };
 
   const positionStyles: Record<string, string> = {
@@ -50,59 +81,57 @@ export const Preview: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center p-10">
-      <h2 className="text-2xl font-bold mb-8">Preview</h2>
+      <h2 className="text-2xl font-bold mb-6">Preview</h2>
 
-      <div className="flex flex-col md:flex-row gap-10 w-full max-w-4xl justify-between items-start">
-        {/* Shirt Preview Area */}
+      <div className="flex flex-col md:flex-row gap-20 w-full max-w-5xl mx-auto items-center justify-center">
+        {/* Shirt Preview */}
         <div className="relative w-[300px] h-[350px]">
           <img
             src={PREVIEW}
-            alt="shirt preview"
+            alt="shirt"
             className="w-full h-full object-contain rounded shadow border"
           />
 
-          {/* Show only checked + selected images */}
-          {positions.map((position) => {
-            const image = selectedImages[position];
-            const isChecked = checkedPositions[position];
-            const style = positionStyles[position] || "top-0 left-0";
+          {/* Overlay image if a slide is active */}
+          {currentPosition && selectedImages[currentPosition] && (
+            <img
+              src={selectedImages[currentPosition]}
+              alt={currentPosition}
+              className={`absolute ${positionStyles[currentPosition]} h-16 object-contain`}
+            />
+          )}
 
-            return (
-              isChecked &&
-              image && (
-                <img
-                  key={position}
-                  src={image}
-                  alt={`${position} design`}
-                  className={`absolute ${style} h-16 object-contain`}
-                />
-              )
-            );
-          })}
-
-          {/* Navigation */}
-          <div className="flex justify-center gap-8 mt-4 absolute bottom-[-40px] left-1/2 transform -translate-x-1/2">
-            <ChevronLeft size={24} />
-            <div className="flex items-center gap-3">
-              <span className="w-2 h-2 bg-custom-black rounded-full inline-block"></span>
-              <span className="w-2 h-2 bg-custom-grey rounded-full inline-block"></span>
-              <span className="w-2 h-2 bg-custom-grey rounded-full inline-block"></span>
+          {/* Carousel Controls */}
+          {totalSlides > 0 && (
+            <div className="flex justify-center gap-8 mt-6 absolute bottom-[-60px] left-1/2 transform -translate-x-1/2">
+              <ChevronLeft size={24} onClick={handlePrev} className="cursor-pointer" />
+              <div className="flex items-center gap-3">
+                {previews.map((_, index) => (
+                  <span
+                    key={index}
+                    className={`w-2 h-2 rounded-full inline-block ${
+                      index === currentSlide ? "bg-black" : "bg-gray-400"
+                    }`}
+                  />
+                ))}
+              </div>
+              <ChevronRight size={24} onClick={handleNext} className="cursor-pointer" />
             </div>
-            <ChevronRight size={24} />
-          </div>
+          )}
         </div>
 
-        {/* Controls */}
-        <div className="flex flex-col gap-4 text-left w-full max-w-md">
+        {/* Controls for selecting image & position */}
+        <div className="flex flex-col gap-2 text-left w-full max-w-md">
           {positions.map((pos, index) => (
             <div
               key={index}
-              className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2"
+              className="flex flex-col sm:flex-row justify-between items-center sm:items-center gap-2"
             >
               <label className="flex items-center gap-2 text-lg">
                 <input
                   type="checkbox"
                   onChange={(e) => handleCheckboxChange(pos, e.target.checked)}
+                  checked={checkedPositions[pos] || false}
                 />
                 {pos}
               </label>
@@ -110,6 +139,7 @@ export const Preview: React.FC = () => {
               <select
                 className="border rounded px-2 py-1"
                 onChange={(e) => handleImageSelect(pos, e.target.value)}
+                value={selectedImages[pos] || ""}
               >
                 <option value="">Select image</option>
                 {uploadedImages.map((img, idx) => (
@@ -122,7 +152,7 @@ export const Preview: React.FC = () => {
               {selectedImages[pos] && (
                 <img
                   src={selectedImages[pos]}
-                  alt={`Thumbnail for ${pos}`}
+                  alt={`Preview for ${pos}`}
                   className="w-16 h-16 object-cover rounded border"
                 />
               )}
@@ -130,11 +160,11 @@ export const Preview: React.FC = () => {
           ))}
 
           {/* Action Buttons */}
-          <div className="flex gap-4 mt-6">
-            <button className="bg-custom-yellow px-6 py-2 rounded font-semibold shadow">
+          <div className="flex gap-4 mt-4">
+            <button className="bg-yellow-400 px-6 py-2 rounded font-semibold shadow">
               Save as PDF
             </button>
-            <button className="bg-custom-yellow px-6 py-2 rounded font-semibold shadow">
+            <button className="bg-yellow-400 px-6 py-2 rounded font-semibold shadow">
               Contact for purchasing
             </button>
           </div>
