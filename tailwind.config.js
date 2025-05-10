@@ -19,6 +19,9 @@ export default {
       fontSize:{
         'xl': '1.25rem',
         '3xl': '1.875rem',
+      },
+      screens:{
+        'max-lg': { max: '1100px' },
       }
     },
   },
