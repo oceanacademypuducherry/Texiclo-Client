@@ -12,7 +12,7 @@ export const products = [
     price: 699,
     quantity: 3,
     categoryId: 1,
-    collectionId: 1
+    collectionId: 2
   },
   {
     id: 2,
@@ -56,7 +56,7 @@ export const products = [
     price: 799,
     quantity: 7,
     categoryId: 1,
-    collectionId: 1
+    collectionId: 2
   },
   {
     id: 6,
@@ -89,7 +89,7 @@ export const products = [
     price: 799,
     quantity: 1,
     categoryId: 1,
-    collectionId: 1
+    collectionId: 2
   },
   {
     id: 9,
@@ -100,7 +100,7 @@ export const products = [
     price: 799,
     quantity: 1,
     categoryId: 1,
-    collectionId: 1
+    collectionId: 2
   },
   {
     id: 10,
@@ -111,7 +111,7 @@ export const products = [
     price: 799,
     quantity: 1,
     categoryId: 1,
-    collectionId: 1
+    collectionId: 2
   },
   {
     id: 11,
@@ -122,7 +122,7 @@ export const products = [
     price: 799,
     quantity: 1,
     categoryId: 1,
-    collectionId: 1
+    collectionId: 3
   },
   {
     id: 12,
@@ -144,7 +144,7 @@ export const products = [
     price: 799,
     quantity: 1,
     categoryId: 1,
-    collectionId: 1
+    collectionId: 4
   },
   {
     id: 14,
@@ -155,7 +155,7 @@ export const products = [
     price: 799,
     quantity: 1,
     categoryId: 1,
-    collectionId: 1
+    collectionId: 4
   },
   {
     id: 15,
@@ -276,7 +276,7 @@ export const products = [
     price: 799,
     quantity: 1,
     categoryId: 3,
-    collectionId: 1
+    collectionId: 2
   },
   {
     id: 26,
@@ -287,7 +287,7 @@ export const products = [
     price: 799,
     quantity: 1,
     categoryId: 3,
-    collectionId: 1
+    collectionId: 2
   },
   {
     id: 27,
@@ -331,7 +331,7 @@ export const products = [
     price: 799,
     quantity: 6,
     categoryId: 2,
-    collectionId: 1
+    collectionId: 2
   }
   
 ];

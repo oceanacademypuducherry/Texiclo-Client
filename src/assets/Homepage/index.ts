@@ -1,5 +1,6 @@
 import TEXICLO from "./texiclo.svg";
-import LOGO from "./banner1.svg";
+// import LOGO from "./banner1.svg";
+import LOGO from "./banner1.jpg";
 import LOGO1 from "./banner2.svg";
 import LOGO2 from "./banner3.svg";
 import HEROIMAGE from "./hero.svg";

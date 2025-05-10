@@ -22,7 +22,7 @@ export const CollectionPage = () => {
           <div
             key={collection.id}
             className="overflow-hidden cursor-pointer"
-            onClick={() => navigate(`/products/?categoryId=${collection.id}`)} 
+            onClick={() => navigate(`/products/?collectionId=${collection.id}`)} 
           >
             <img
               src={collection.image}

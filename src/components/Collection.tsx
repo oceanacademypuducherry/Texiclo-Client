@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCollections } from "../redux/collectionSlice";
 import { RootState } from "../app/store"; 
-import { Collections } from "../constant/collection"; // mock data import
+import { Collections } from "../constant/collection"; 
 
 export const Collection = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export const Collection = () => {
   const shouldShowViewMore = collections.length >= 5;
 
   useEffect(() => {
-    dispatch(setCollections(Collections)); // Inject mock data into Redux
+    dispatch(setCollections(Collections)); 
   }, [dispatch]);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export const Collection = () => {
             <div key={collection.id} className="flex-shrink-0 w-[250px] collection-card">
               <div
   className="relative rounded-xl overflow-hidden w-full h-[300px] cursor-pointer"
-  onClick={() => navigate(`/products/?categoryId=${collection.id}`)}
+  onClick={() => navigate(`/products/?collectionId=${collection.id}`)}
 >
   <img src={collection.image} alt={collection.name} className="w-full h-full object-cover" />
   <h3 className="absolute bottom-4 left-4 text-white text-xl font-semibold z-10">

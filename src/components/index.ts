@@ -8,3 +8,6 @@ export * from "./Category";
 export * from "./ContactUs";
 export * from "./Footer";
 export * from "./ProductGalleryDescription";
+export * from "./Pagination";
+export * from "./Search";
+

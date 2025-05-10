@@ -18,7 +18,7 @@ export const  Navbar=()=>{
             Home
           </Link>
         <Link
-            to="/"
+            to="/estimation"
             className="text-xl font-semibold hover:text-blue-600 transition"
           >
             Estimation 
@@ -26,7 +26,7 @@ export const  Navbar=()=>{
           
           
           <Link
-            to="/contact"
+            to="/#contact"
             className="text-xl font-semibold hover:text-blue-600 transition"
           >
             ContactUs

@@ -47,14 +47,7 @@ export const Preview = () => {
             </div>
           ))}
 
-          <div className="mt-4">
-            <label className="text-lg">Color: </label>
-            <select className="ml-2 border px-3 py-1 rounded">
-              <option>Blue</option>
-              <option>Red</option>
-              <option>Green</option>
-            </select>
-          </div>
+          
 
           <div className="flex gap-4 mt-6">
             <button className="bg-custom-yellow px-6 py-2 rounded font-semibold shadow">

@@ -25,7 +25,7 @@ const schema = yup.object().shape({
 });
 
 
-export const ContactUs = () => {
+export const ContactUs = ({ id }) => {
   const {
     register,
     handleSubmit,
@@ -41,7 +41,7 @@ export const ContactUs = () => {
   };
 
   return (
-    <div className="w-[90%] mx-auto px-6 md:px-20 py-10 text-[20px]">
+    <div id={id} className="w-[90%] mx-auto px-6 md:px-20 py-10 text-[20px]">
       <h2 className="text-3xl font-bold text-center mb-4">Contact Us</h2>
       <p className="text-center text-custom-grey mb-10 max-w-[700px] mx-auto">
         We're talking about clean beauty gift sets, of course – and we've got a bouquet of beauties for yourself or someone you love.
