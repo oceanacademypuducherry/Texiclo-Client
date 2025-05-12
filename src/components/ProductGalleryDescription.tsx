@@ -1,25 +1,31 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../redux/estimationSlice";
 import { CROPTOP, HOODIE, POLO, TSHIRT } from "../assets";
 
 export const ProductGalleryDescription: React.FC = () => {
   const navigate = useNavigate();
-  const [selectedImage, setSelectedImage] = useState(CROPTOP); // Main image preview state
+  const dispatch = useDispatch();
 
-  // Handle image upload
+  const [selectedImage, setSelectedImage] = useState(CROPTOP);
+  const [gsm, setGsm] = useState("120");
+  const [color, setColor] = useState("White");
+  const [size, setSize] = useState("M");
+  const [type, setType] = useState("full sleeve");
+  const price = 680;
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
     const fileArray: File[] = Array.from(files);
-
     Promise.all(fileArray.map(fileToBase64)).then((base64Images: string[]) => {
       localStorage.setItem("uploadedImages", JSON.stringify(base64Images));
       navigate("/preview");
     });
   };
 
-  // Convert file to base64
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -29,28 +35,25 @@ export const ProductGalleryDescription: React.FC = () => {
     });
   };
 
-  // Image list
-  const thumbnails = [CROPTOP, TSHIRT, POLO, HOODIE];
-
-
   const handleAddToEstimation = () => {
-    dispatch(addProduct({
-      id: uuidv4(),
+    const newProduct = {
+      id: Date.now().toString(), // Unique ID
       img: selectedImage,
       gsm,
       color,
       size,
       type,
-      price: 680,
-    }));
+      price,
+    };
+    dispatch(addProduct(newProduct));
     navigate("/estimation");
   };
 
+  const thumbnails = [CROPTOP, TSHIRT, POLO, HOODIE];
+
   return (
     <div className="mx-auto px-20 flex flex-col lg:flex-row gap-6 mb-16">
-      {/* Image Gallery Section */}
       <div className="flex gap-4">
-        {/* Side thumbnails */}
         <div className="flex flex-col gap-2 pt-2">
           {thumbnails.map((img, idx) => (
             <img
@@ -65,27 +68,24 @@ export const ProductGalleryDescription: React.FC = () => {
           ))}
         </div>
 
-        {/* Main preview image */}
         <div className="w-96 h-96 border rounded">
-          <img
-            src={selectedImage}
-            alt="preview"
-            className="w-full h-full object-cover"
-          />
+          <img src={selectedImage} alt="preview" className="w-full h-full object-cover" />
         </div>
       </div>
 
-      {/* Product Description Section */}
       <div className="space-y-3 text-xl">
         <h2 className="font-medium">Mens printed t-shirts</h2>
         <p className="text-custom-grey text-xl">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tristique
-          malesuada elit, ut facilisis tellus elementum id.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tristique malesuada elit, ut facilisis tellus elementum id.
         </p>
 
         <p>
           <span>GSM:</span>
-          <select className="ml-2 border px-2 py-1 rounded text-xl">
+          <select
+            className="ml-2 border px-2 py-1 rounded text-xl"
+            value={gsm}
+            onChange={(e) => setGsm(e.target.value)}
+          >
             {Array.from({ length: (500 - 120) / 20 + 1 }, (_, i) => 120 + i * 20).map((gsm) => (
               <option key={gsm} value={gsm}>{gsm} GSM</option>
             ))}
@@ -94,7 +94,11 @@ export const ProductGalleryDescription: React.FC = () => {
 
         <p>
           <span>Color:</span>
-          <select className="ml-2 border px-2 py-1 rounded text-xl">
+          <select
+            className="ml-2 border px-2 py-1 rounded text-xl"
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+          >
             <option>White</option>
             <option>Black</option>
             <option>Gray</option>
@@ -108,7 +112,11 @@ export const ProductGalleryDescription: React.FC = () => {
 
         <p>
           <span>Size:</span>
-          <select className="ml-2 border px-2 py-1 rounded text-xl">
+          <select
+            className="ml-2 border px-2 py-1 rounded text-xl"
+            value={size}
+            onChange={(e) => setSize(e.target.value)}
+          >
             <option>XS</option>
             <option>S</option>
             <option>M</option>
@@ -119,11 +127,15 @@ export const ProductGalleryDescription: React.FC = () => {
           </select>
         </p>
 
-        <p><span>Total:</span> ₹680</p>
+        <p><span>Total:</span> ₹{price}</p>
 
         <p>
           <span>Type:</span>
-          <select className="ml-2 border px-2 py-1 rounded text-xl">
+          <select
+            className="ml-2 border px-2 py-1 rounded text-xl"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+          >
             <option>full sleeve</option>
             <option>sleeveless</option>
             <option>crop full sleeve</option>
@@ -133,7 +145,6 @@ export const ProductGalleryDescription: React.FC = () => {
 
         <p className="text-custom-darkgreen">Discount applied 20% Off</p>
 
-        
         <div className="flex gap-4 mt-4">
           <label className="px-4 py-2 border rounded cursor-pointer">
             Upload & Preview
@@ -145,7 +156,10 @@ export const ProductGalleryDescription: React.FC = () => {
               className="hidden"
             />
           </label>
-          <button className="px-4 py-2 bg-custom-yellow rounded font-medium">
+          <button
+            className="px-4 py-2 bg-custom-yellow rounded font-medium"
+            onClick={handleAddToEstimation}
+          >
             Add to estimation
           </button>
         </div>
