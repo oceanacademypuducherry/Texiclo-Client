@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { categoryReducer, collectionReducer, productReducer } from '../redux';
+import { categoryReducer, collectionReducer, estimationReducer, productReducer } from '../redux';
 
 
 export const store = configureStore({
@@ -7,6 +7,7 @@ export const store = configureStore({
     categories: categoryReducer,
     collections: collectionReducer,
     products: productReducer,
+    estimation: estimationReducer,
   },
 });
 

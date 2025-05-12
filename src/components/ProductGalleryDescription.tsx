@@ -1,46 +1,81 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CROPTOP } from "../assets";
+import { CROPTOP, HOODIE, POLO, TSHIRT } from "../assets";
 
 export const ProductGalleryDescription: React.FC = () => {
   const navigate = useNavigate();
+  const [selectedImage, setSelectedImage] = useState(CROPTOP); // Main image preview state
 
-// ✅ Storing uploaded images in localStorage
-const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const files = e.target.files;
-  if (!files) return;
+  // Handle image upload
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
 
-  const fileArray: File[] = Array.from(files);
+    const fileArray: File[] = Array.from(files);
 
-  Promise.all(fileArray.map(fileToBase64)).then((base64Images: string[]) => {
-    localStorage.setItem("uploadedImages", JSON.stringify(base64Images));
-    navigate("/preview");
-  });
-};
+    Promise.all(fileArray.map(fileToBase64)).then((base64Images: string[]) => {
+      localStorage.setItem("uploadedImages", JSON.stringify(base64Images));
+      navigate("/preview");
+    });
+  };
 
-const fileToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-};
+  // Convert file to base64
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
 
+  // Image list
+  const thumbnails = [CROPTOP, TSHIRT, POLO, HOODIE];
+
+
+  const handleAddToEstimation = () => {
+    dispatch(addProduct({
+      id: uuidv4(),
+      img: selectedImage,
+      gsm,
+      color,
+      size,
+      type,
+      price: 680,
+    }));
+    navigate("/estimation");
+  };
 
   return (
     <div className="mx-auto px-20 flex flex-col lg:flex-row gap-6 mb-16">
+      {/* Image Gallery Section */}
       <div className="flex gap-4">
+        {/* Side thumbnails */}
         <div className="flex flex-col gap-2 pt-2">
-          {[CROPTOP, CROPTOP, CROPTOP, CROPTOP].map((img, idx) => (
-            <img key={idx} src={img} alt={`thumb-${idx}`} className="w-16 h-16 object-cover border" />
+          {thumbnails.map((img, idx) => (
+            <img
+              key={idx}
+              src={img}
+              alt={`thumb-${idx}`}
+              onMouseEnter={() => setSelectedImage(img)}
+              className={`w-16 h-16 object-cover border rounded cursor-pointer transition duration-200 ${
+                selectedImage === img ? "border-1 border-custom-grey" : "border"
+              }`}
+            />
           ))}
         </div>
-        <div className="w-82 h-82">
-          <img src={CROPTOP} alt="preview" className="w-full h-full object-contain" />
+
+        {/* Main preview image */}
+        <div className="w-96 h-96 border rounded">
+          <img
+            src={selectedImage}
+            alt="preview"
+            className="w-full h-full object-cover"
+          />
         </div>
       </div>
 
+      {/* Product Description Section */}
       <div className="space-y-3 text-xl">
         <h2 className="font-medium">Mens printed t-shirts</h2>
         <p className="text-custom-grey text-xl">
@@ -72,7 +107,7 @@ const fileToBase64 = (file: File): Promise<string> => {
         </p>
 
         <p>
-          <span >Size:</span>
+          <span>Size:</span>
           <select className="ml-2 border px-2 py-1 rounded text-xl">
             <option>XS</option>
             <option>S</option>
@@ -84,10 +119,10 @@ const fileToBase64 = (file: File): Promise<string> => {
           </select>
         </p>
 
-        <p><span >Total:</span> ₹680</p>
+        <p><span>Total:</span> ₹680</p>
 
         <p>
-          <span >Type:</span>
+          <span>Type:</span>
           <select className="ml-2 border px-2 py-1 rounded text-xl">
             <option>full sleeve</option>
             <option>sleeveless</option>
@@ -97,6 +132,8 @@ const fileToBase64 = (file: File): Promise<string> => {
         </p>
 
         <p className="text-custom-darkgreen">Discount applied 20% Off</p>
+
+        
         <div className="flex gap-4 mt-4">
           <label className="px-4 py-2 border rounded cursor-pointer">
             Upload & Preview

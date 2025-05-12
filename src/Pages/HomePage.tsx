@@ -1,7 +1,7 @@
-import {Collection, ContactUs, Footer, Hero, Idea, ImageBannerSlider, Navbar, Print, Product } from "../components";
-
+import {Collection, ContactUs,  Hero, Idea, ImageBannerSlider, Print, Product } from "../components";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { Footer, Navbar } from "../common";
 
 export  const HomePage = () => {
 

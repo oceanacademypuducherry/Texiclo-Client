@@ -4,8 +4,9 @@ import { setCategories } from "../redux/categorySlice";
 import { RootState } from "../app/store";
 import { categoryData } from "../constant/category";
 import { useNavigate } from "react-router-dom";
-import { Footer, Navbar, SearchBar } from "../components";
-import { Pagination } from "../components/Pagination";
+
+import { Pagination } from "../common/Pagination";
+import { Footer, Navbar, SearchBar } from "../common";
 
 
 export const CategoryPage = () => {

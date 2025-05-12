@@ -1,6 +1,7 @@
 import { HOODIE, POLO, SWEATSHIRTS, TSHIRT } from "../assets";
 import { IoIosSearch } from "react-icons/io";
-import { Footer, Navbar } from "../components";
+import { Footer, Navbar } from "../common";
+
 
 
 

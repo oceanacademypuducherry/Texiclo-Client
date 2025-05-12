@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "../redux/productSlice";
 import { RootState } from "../redux";
 import { products as mockProducts } from "../constant/Product";
-import { Navbar, Footer, SearchBar } from "../components";
-import { IoIosSearch } from "react-icons/io";
+
 import { useLocation } from "react-router-dom";
-import { Pagination } from "../components/Pagination";
+import { Pagination } from "../common/Pagination";
+import { Footer, Navbar, SearchBar } from "../common";
 
 
 
