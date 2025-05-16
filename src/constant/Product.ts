@@ -10,7 +10,7 @@ export const products = [
     color: "Black",
     type: "full sleeve",
     price: 699,
-    quantity: 3,
+    quantity: 1,
     categoryId: 1,
     collectionId: 2
   },
@@ -21,7 +21,7 @@ export const products = [
     color: "Gray",
     type: "sleeveless",
     price: 1199,
-    quantity: 2,
+    quantity: 1,
     categoryId: 8,
     collectionId: 2
   },
@@ -54,7 +54,7 @@ export const products = [
     color: "Blue",
     type: "crop full sleeveless",
     price: 799,
-    quantity: 7,
+    quantity: 1,
     categoryId: 1,
     collectionId: 2
   },
@@ -65,7 +65,7 @@ export const products = [
     color: "Blue",
     type: "crop full sleeveless",
     price: 799,
-    quantity: 5,
+    quantity: 1,
     categoryId: 1,
     collectionId: 1
   },
@@ -263,7 +263,7 @@ export const products = [
     color: "Blue",
     type: "crop full sleeveless",
     price: 799,
-    discount: 10,
+    quantity: 1,
     categoryId: 3,
     collectionId: 1
   },
@@ -296,7 +296,7 @@ export const products = [
     color: "Blue",
     type: "crop full sleeveless",
     price: 799,
-    discount: 10,
+    quantity: 1,
     categoryId: 3,
     collectionId: 1
   },
@@ -329,7 +329,7 @@ export const products = [
     color: "Blue",
     type: "crop full sleeveless",
     price: 799,
-    quantity: 6,
+    quantity: 1,
     categoryId: 2,
     collectionId: 2
   }

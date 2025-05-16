@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "../redux/productSlice";
 import { RootState } from "../redux";
 import { products as mockProducts } from "../constant/Product";
-
+import { increaseQuantity, decreaseQuantity } from "../redux/productSlice";
+import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { Pagination } from "../common/Pagination";
 import { Footer, Navbar, SearchBar } from "../common";
@@ -13,6 +14,7 @@ import { Footer, Navbar, SearchBar } from "../common";
 export const ProductPage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const categoryId = searchParams.get("categoryId");
   const collectionId = searchParams.get("collectionId");
@@ -71,34 +73,48 @@ export const ProductPage = () => {
 
         <h2 className="text-3xl font-bold text-center mb-14">Products</h2>
 
-        <div className="flex justify-between items-center mb-12">
-          <p className="text-custom-grey text-xl">
-            Showing {currentProducts.length} of {filteredProducts.length} results
-          </p>
-          <div className="relative">
-            <SearchBar onSearch={(query) => {
-  setSearchQuery(query);
-  setCurrentPage(1); 
-}} />
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
+  <div className="w-full md:w-1/2">
+    <SearchBar onSearch={(query) => {
+      setSearchQuery(query);
+      setCurrentPage(1); 
+    }} />
+  </div>
+  <p className="text-custom-grey text-xl self-end md:self-center">
+    Showing {currentProducts.length} of {filteredProducts.length} results
+  </p>
+</div>
 
-            
-          </div>
-        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
           {currentProducts.length > 0 ? (
             currentProducts.map((product) => (
-              <div key={product.id} className="flex flex-col items-center text-center">
+              <div key={product.id} className="flex flex-col items-center text-center cursor-pointer"
+               onClick={() => navigate(`/viewproduct/${product.id}`)}>
                 <img src={product.image} alt={product.name} className="w-full h-auto rounded-md shadow-sm" />
                 <h3 className="mt-5 text-xl font-medium mb-3">
                   {product.name} ({product.color}, {product.type})
                 </h3>
                 <p className="text-custom-grey text-xl mb-3">₹{product.price}</p>
-                <div className="flex items-center justify-center gap-3 mt-2">
-                  <button className="w-10 h-10 flex items-center justify-center rounded-full border">-</button>
-                  <span className="w-10 h-10 border px-3 py-1">{product.quantity}</span>
-                  <button className="w-10 h-10 flex items-center justify-center rounded-full border">+</button>
-                </div>
+                {/* <div className="flex items-center justify-center gap-3 mt-2">
+  <button
+    className="w-10 h-10 flex items-center justify-center rounded-full border"
+    onClick={() => dispatch(decreaseQuantity(product.id))}
+    disabled={product.quantity === 1}
+  >
+    -
+  </button>
+  <span className="w-10 h-10 border flex items-center justify-center">
+    {product.quantity}
+  </span>
+  <button
+    className="w-10 h-10 flex items-center justify-center rounded-full border"
+    onClick={() => dispatch(increaseQuantity(product.id))}
+  >
+    +
+  </button>
+</div> */}
+
               </div>
             ))
           ) : (

@@ -4,13 +4,10 @@ interface Product {
   id: number;
   name: string;
   image: string;
-//   description: string;
-//   gsm: number;
   color: string;
-//   size: string;
   type: string;
   price: number;
-  quantity?: number;
+  quantity?: number; 
   categoryId: number;
   collectionId: number;
 }
@@ -28,10 +25,25 @@ const productSlice = createSlice({
   initialState,
   reducers: {
     setProducts(state, action: PayloadAction<Product[]>) {
-      state.products = action.payload;
+      state.products = action.payload.map((product) => ({
+        ...product,
+        quantity: product.quantity ?? 1, 
+      }));
+    },
+    increaseQuantity(state, action: PayloadAction<number>) {
+      const product = state.products.find(p => p.id === action.payload);
+      if (product) {
+        product.quantity = (product.quantity ?? 1) + 1;
+      }
+    },
+    decreaseQuantity(state, action: PayloadAction<number>) {
+      const product = state.products.find(p => p.id === action.payload);
+      if (product && (product.quantity ?? 1) > 1) {
+        product.quantity = (product.quantity ?? 1) - 1;
+      }
     },
   },
 });
 
-export const { setProducts } = productSlice.actions;
-export const productReducer= productSlice.reducer;
+export const { setProducts, increaseQuantity, decreaseQuantity } = productSlice.actions;
+export const productReducer = productSlice.reducer;

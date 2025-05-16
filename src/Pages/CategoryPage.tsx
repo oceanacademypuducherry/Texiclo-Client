@@ -40,13 +40,14 @@ export const CategoryPage = () => {
       <main className="w-[90%] mx-auto flex-grow px-6 md:px-20 py-10">
         <h2 className="text-3xl font-bold text-center mb-14">Categories</h2>
 
-        <div className="flex justify-between items-center mb-12">
-          <p className="text-custom-grey text-xl">
-            Showing {filteredCategories.length === 0 ? 0 : startIndex + 1}–
-            {Math.min(startIndex + itemsPerPage, filteredCategories.length)} of {filteredCategories.length} results
-          </p>
-          <SearchBar onSearch={setSearchQuery} />
-        </div>
+        <div className="flex flex-col-reverse md:flex-row justify-between items-center mb-12 gap-4">
+  <SearchBar onSearch={setSearchQuery} />
+  <p className="text-custom-grey text-xl text-center md:text-right">
+    Showing {filteredCategories.length === 0 ? 0 : startIndex + 1}–
+    {Math.min(startIndex + itemsPerPage, filteredCategories.length)} of {filteredCategories.length} results
+  </p>
+</div>
+
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
           {currentCategories.length > 0 ? (

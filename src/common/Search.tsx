@@ -11,23 +11,23 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       onSearch(searchTerm.trim().toLowerCase());
-    }, 300); 
+    }, 300);
 
     return () => clearTimeout(delayDebounce);
   }, [searchTerm, onSearch]);
 
   return (
-    <div className="relative">
+    <div className="relative w-full max-w-md"> {/* Wider input container */}
+      <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-custom-grey text-2xl">
+        <IoIosSearch />
+      </span>
       <input
         type="text"
         placeholder="Search"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="border border-gray-300 rounded-full px-4 py-1 focus:outline-none text-xl"
+        className="w-full border border-gray-300 rounded-full pl-12 pr-4 py-2 text-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-400"
       />
-      <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-custom-grey">
-        <IoIosSearch />
-      </span>
     </div>
   );
 };

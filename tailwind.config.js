@@ -6,6 +6,15 @@ export default {
   ],
   theme: {
     extend: {
+       animation: {
+    slideProgress: 'slideProgress 3s linear forwards',
+  },
+  keyframes: {
+    slideProgress: {
+      '0%': { width: '0%' },
+      '100%': { width: '100%' },
+    },
+  },
       fontFamily: {
         sans: ["Poppins", "sans-serif"],
       },
@@ -22,9 +31,14 @@ export default {
       },
       screens:{
         'max-lg': { max: '1100px' },
+        'below-1000': { max: '1200px' }, 
       }
     },
+    
   },
-  plugins: [],
+  
+  plugins: [
+    
+  ],
 }
 

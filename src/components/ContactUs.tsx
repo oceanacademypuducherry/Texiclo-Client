@@ -4,7 +4,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { CONTACT } from '../assets';
 
-
 const schema = yup.object().shape({
   name: yup
   .string()
@@ -24,7 +23,6 @@ const schema = yup.object().shape({
   message: yup.string().required('Message is required'),
 });
 
-
 export const ContactUs = ({ id }) => {
   const {
     register,
@@ -41,8 +39,9 @@ export const ContactUs = ({ id }) => {
   };
 
   return (
-    <div id={id} className="w-[90%] mx-auto px-6 md:px-20 py-10 text-[20px]">
-      <h2 className="text-3xl font-bold text-center mb-4">Contact Us</h2>
+    <div id={id} className="w-[90%] mx-auto max-lg:px-0 px-0 md:px-20 py-10 md:text-[20px] text-[16px]">
+<h2 className="md:text-[30px] text-[20px] font-bold text-center mb-4">Contact Us</h2>
+
       <p className="text-center text-custom-grey mb-10 max-w-[700px] mx-auto">
         We're talking about clean beauty gift sets, of course – and we've got a bouquet of beauties for yourself or someone you love.
       </p>
@@ -84,7 +83,8 @@ export const ContactUs = ({ id }) => {
 
         
         <div className="flex-1">
-          <h3 className="text-xl font-semibold mb-6">Send a Message</h3>
+          <h3 className="md:text-xl text-base font-semibold mb-6">Send a Message</h3>
+
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
               <input
@@ -96,7 +96,7 @@ export const ContactUs = ({ id }) => {
               {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
             </div>
 
-            <div className="flex gap-4 text-custom-grey">
+            <div className="flex gap-4 text-custom-grey flex-wrap">
               <label className="flex items-center gap-2">
                 <input type="checkbox" value="Bulk" {...register("type")} />
                 Bulk

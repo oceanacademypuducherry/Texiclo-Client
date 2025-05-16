@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
     element:< CollectionPage/>
   },
   {
-      path: "/viewproducts",
+      path: "/viewproduct/:productId",
       element: <ViewProduct/>,
   },
   {
