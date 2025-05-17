@@ -1,13 +1,13 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface Product {
   id: number;
   name: string;
-  image: string;
-  color: string;
-  type: string;
-  price: number;
-  quantity?: number; 
+  image: {
+    frontImage: string;
+    backImage: string;
+    sleeveImage: string;
+  };
   categoryId: number;
   collectionId: number;
 }
@@ -24,26 +24,11 @@ const productSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    setProducts(state, action: PayloadAction<Product[]>) {
-      state.products = action.payload.map((product) => ({
-        ...product,
-        quantity: product.quantity ?? 1, 
-      }));
-    },
-    increaseQuantity(state, action: PayloadAction<number>) {
-      const product = state.products.find(p => p.id === action.payload);
-      if (product) {
-        product.quantity = (product.quantity ?? 1) + 1;
-      }
-    },
-    decreaseQuantity(state, action: PayloadAction<number>) {
-      const product = state.products.find(p => p.id === action.payload);
-      if (product && (product.quantity ?? 1) > 1) {
-        product.quantity = (product.quantity ?? 1) - 1;
-      }
+    setProducts(state, action) {
+      state.products = action.payload;
     },
   },
 });
 
-export const { setProducts, increaseQuantity, decreaseQuantity } = productSlice.actions;
+export const { setProducts } = productSlice.actions;
 export const productReducer = productSlice.reducer;

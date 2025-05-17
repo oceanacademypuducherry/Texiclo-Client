@@ -4,19 +4,26 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface Product {
   id: number;
   name: string;
-  image: string;
+  image: {
+    frontImage: string;
+    backImage: string;
+    sleeveImage: string;
+    Image: string; // If this is the same as sleeveImage, consider removing one
+  };
   description: string;
-  GSM: number;
-  color: string[];
-  size: string[];
+  GSM: number[];         // List of GSM values
+  color: string;         // If this should be multiple colors, use: string[]
+  size: string;          // If this should be multiple sizes, use: string[]
   total: number;
-  type: string[];
+  type: string;          // If this should be multiple types, use: string[]
+  quantity: number;
   discount: number;
   productId: number;
 }
 
+
 interface ViewProductState {
-  products: Product[];
+  products: Product[];                                                                                                            
   selectedProduct: Product | null;
 }
 

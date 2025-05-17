@@ -2,8 +2,10 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCollections } from "../redux/collectionSlice";
+
 import { RootState } from "../app/store";
 import { Collections } from "../constant/collection";
+
 
 export const Collection = () => {
   const navigate = useNavigate();
@@ -15,6 +17,7 @@ export const Collection = () => {
   useEffect(() => {
     dispatch(setCollections(Collections));
   }, [dispatch]);
+  
 
   return (
     <section className="w-[90%] max-w-[1400px] mx-auto px-4 md:px-10 lg:px-14 pt-0 lg:pt-20 pb-10 md:pb-10 lg:pb-20">

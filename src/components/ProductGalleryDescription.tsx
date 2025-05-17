@@ -1,19 +1,28 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../redux/estimationSlice";
 import { CROPTOP, HOODIE, POLO, TSHIRT } from "../assets";
+import { RootState } from "../redux";
 
 export const ProductGalleryDescription: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [selectedImage, setSelectedImage] = useState(CROPTOP);
-  const [gsm, setGsm] = useState("120");
-  const [color, setColor] = useState("White");
-  const [size, setSize] = useState("M");
-  const [type, setType] = useState("full sleeve");
-  const price = 680;
+  const selectedProduct = useSelector((state: RootState) => state.viewproduct.selectedProduct);
+
+  const [selectedImage, setSelectedImage] = useState<string>(
+    selectedProduct?.image?.frontImage || CROPTOP
+  );
+  const [gsm, setGsm] = useState<string>(selectedProduct?.GSM?.[0] || "120");
+  const [color, setColor] = useState<string>(selectedProduct?.color || "White");
+  const [size, setSize] = useState<string>(selectedProduct?.size || "M");
+  const [type, setType] = useState<string>(selectedProduct?.type || "full sleeve");
+
+  // Default price calculation
+  const basePrice = selectedProduct?.price || 500;
+  const discount = 0.2; // 20% discount
+  const price = Math.round(basePrice - basePrice * discount);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -37,13 +46,14 @@ export const ProductGalleryDescription: React.FC = () => {
 
   const handleAddToEstimation = () => {
     const newProduct = {
-      id: Date.now().toString(), // Unique ID
+      id: Date.now().toString(),
       img: selectedImage,
       gsm,
       color,
       size,
       type,
       price,
+      name: selectedProduct?.name || "Mens printed t-shirts",
     };
     dispatch(addProduct(newProduct));
     navigate("/estimation");
@@ -53,6 +63,7 @@ export const ProductGalleryDescription: React.FC = () => {
 
   return (
     <div className="mx-auto px-20 flex flex-col lg:flex-row gap-6 mb-16">
+      {/* LEFT: Image Gallery */}
       <div className="flex gap-4">
         <div className="flex flex-col gap-2 pt-2">
           {thumbnails.map((img, idx) => (
@@ -62,21 +73,24 @@ export const ProductGalleryDescription: React.FC = () => {
               alt={`thumb-${idx}`}
               onMouseEnter={() => setSelectedImage(img)}
               className={`w-16 h-16 object-cover border rounded cursor-pointer transition duration-200 ${
-                selectedImage === img ? "border-1 border-custom-grey" : "border"
+                selectedImage === img ? "border-2 border-custom-grey" : "border"
               }`}
             />
           ))}
         </div>
-
         <div className="w-96 h-96 border rounded">
           <img src={selectedImage} alt="preview" className="w-full h-full object-cover" />
         </div>
       </div>
 
+      {/* RIGHT: Product Details */}
       <div className="space-y-3 text-xl">
-        <h2 className="font-medium">Mens printed t-shirts</h2>
+        <h2 className="font-medium">
+          {selectedProduct?.name || "Mens printed t-shirts"}
+        </h2>
         <p className="text-custom-grey text-xl">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tristique malesuada elit, ut facilisis tellus elementum id.
+          {selectedProduct?.description ||
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tristique malesuada elit, ut facilisis tellus elementum id."}
         </p>
 
         <p>
@@ -86,8 +100,10 @@ export const ProductGalleryDescription: React.FC = () => {
             value={gsm}
             onChange={(e) => setGsm(e.target.value)}
           >
-            {Array.from({ length: (500 - 120) / 20 + 1 }, (_, i) => 120 + i * 20).map((gsm) => (
-              <option key={gsm} value={gsm}>{gsm} GSM</option>
+            {Array.from({ length: (500 - 120) / 20 + 1 }, (_, i) => 120 + i * 20).map((val) => (
+              <option key={val} value={val}>
+                {val} GSM
+              </option>
             ))}
           </select>
         </p>
@@ -99,14 +115,9 @@ export const ProductGalleryDescription: React.FC = () => {
             value={color}
             onChange={(e) => setColor(e.target.value)}
           >
-            <option>White</option>
-            <option>Black</option>
-            <option>Gray</option>
-            <option>Navy Blue</option>
-            <option>Red</option>
-            <option>Blue</option>
-            <option>Green</option>
-            <option>Yellow</option>
+            {["White", "Black", "Gray", "Navy Blue", "Red", "Blue", "Green", "Yellow"].map((col) => (
+              <option key={col}>{col}</option>
+            ))}
           </select>
         </p>
 
@@ -117,17 +128,11 @@ export const ProductGalleryDescription: React.FC = () => {
             value={size}
             onChange={(e) => setSize(e.target.value)}
           >
-            <option>XS</option>
-            <option>S</option>
-            <option>M</option>
-            <option>L</option>
-            <option>XL</option>
-            <option>XXL</option>
-            <option>3XL</option>
+            {["XS", "S", "M", "L", "XL", "XXL", "3XL"].map((sz) => (
+              <option key={sz}>{sz}</option>
+            ))}
           </select>
         </p>
-
-        <p><span>Total:</span> ₹{price}</p>
 
         <p>
           <span>Type:</span>
@@ -141,6 +146,10 @@ export const ProductGalleryDescription: React.FC = () => {
             <option>crop full sleeve</option>
             <option>crop sleeveless</option>
           </select>
+        </p>
+
+        <p>
+          <span>Total:</span> ₹{price}
         </p>
 
         <p className="text-custom-darkgreen">Discount applied 20% Off</p>

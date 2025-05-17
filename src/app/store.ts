@@ -7,9 +7,10 @@ export const store = configureStore({
     categories: categoryReducer,
     collections: collectionReducer,
     products: productReducer,
-    estimation: estimationReducer,
     viewproduct:viewproductReducer,
+    estimation: estimationReducer,
   },
+   devTools: process.env.NODE_ENV !== 'production',
 });
 
 export type RootState = ReturnType<typeof store.getState>;

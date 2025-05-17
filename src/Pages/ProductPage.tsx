@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "../redux/productSlice";
+import { setAllProducts } from "../redux/viewproductSlice";
 import { RootState } from "../redux";
 import { products as mockProducts } from "../constant/Product";
-import { increaseQuantity, decreaseQuantity } from "../redux/productSlice";
+import {viewproducts} from "../constant/viewproduct"
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { Pagination } from "../common/Pagination";
@@ -20,6 +21,8 @@ export const ProductPage = () => {
   const collectionId = searchParams.get("collectionId");
   const [searchQuery, setSearchQuery] = useState("");
 
+  const viewProducts = useSelector((state: RootState) => state.viewproduct.products);
+const selectedProduct = useSelector((state: RootState) => state.viewproduct.selectedProduct);
 
   const products = useSelector((state: RootState) => state.products.products);
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,6 +33,7 @@ export const ProductPage = () => {
   // Set mock products to Redux
   useEffect(() => {
     dispatch(setProducts(mockProducts));
+    dispatch(setAllProducts(viewproducts));
   }, [dispatch]);
 
   // Reset to first page when filters change

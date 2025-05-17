@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { PREVIEW } from "../assets"; // plain t-shirt image
+import { FRONTIMG } from "../assets"; // plain t-shirt image
 
 export const Preview: React.FC = () => {
   const positions = [
@@ -87,7 +87,7 @@ export const Preview: React.FC = () => {
         {/* Shirt Preview */}
         <div className="relative w-[300px] h-[350px]">
           <img
-            src={PREVIEW}
+            src={FRONTIMG}
             alt="shirt"
             className="w-full h-full object-contain rounded shadow border"
           />

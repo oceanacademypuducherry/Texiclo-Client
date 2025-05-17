@@ -4,7 +4,7 @@ import { HEROIMAGE } from "../assets";
 export const  Hero=()=> {
   return (
     <section className="w-full bg-gradient-to-r from-white to-blue-100  px-4  px-0 sm:px-10">
-      <div className="w-[90%]  mx-auto flex flex-col md:flex-row sm:items-start items-start ">
+      <div className="w-[91%]  mx-auto flex flex-col md:flex-row sm:items-start items-start ">
         {/* Left Content */}
         <div className="md:w-1/2 text-start md:text-left space-y-10  mt-0 sm:mt-28">
         <h1 className="text-2xl sm:text-[30px] font-extrabold text-custom-black leading-[2.0rem] sm:leading-[3.5rem] mt-10 sm:mt-0">
