@@ -2,7 +2,8 @@ import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaClock } from 'react-icons/fa'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { CONTACT } from '../assets';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const schema = yup.object().shape({
   name: yup
@@ -10,11 +11,16 @@ const schema = yup.object().shape({
   .required('Name is required')
   .matches(/^[A-Za-z\s]+$/, 'Name should only contain letters and spaces'),
 
+  // type: yup
+  // .mixed()
+  // .test('is-array-or-undefined', 'Please select at least one type', value => {
+  //   return Array.isArray(value) && value.length > 0;
+  // }),
   type: yup
-  .mixed()
-  .test('is-array-or-undefined', 'Please select at least one type', value => {
-    return Array.isArray(value) && value.length > 0;
-  }),
+  .string()
+  .required('Please select a type')
+  .oneOf(['Bulk', 'Individual'], 'Invalid type selected'),
+
   mobile: yup
     .string()
     .required('Mobile number is required')
@@ -33,13 +39,58 @@ export const ContactUs = ({ id }) => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = () => {
-    console.log('Form submitted');
-    reset();
-  };
+const onSubmit = async (data) => {  
+  try {
+    // Attach screenshot base64 string to data if exists
+    if (screenshot) {
+      data.screenshot = screenshot; // base64 string
+    }
+
+    const response = await fetch('http://localhost:3000/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      alert('Form submitted successfully!');                                                                                                          
+      reset();
+       setScreenshot(null);
+    } else {
+      alert(result.message || 'Submission failed');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('An error occurred while submitting the form.');
+  }
+};
+
+
+
+const [screenshot, setScreenshot] = useState<string | null>(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash === '#contactus') {
+      // Scroll to contact section
+      const section = document.getElementById('contactus');
+      if (section) section.scrollIntoView({ behavior: 'smooth' });
+
+      // Load screenshot from localStorage
+      const img = localStorage.getItem('estimationScreenshot');
+      if (img) {
+        setScreenshot(img);
+
+        // // Optional: clear after using
+        // localStorage.removeItem('estimationScreenshot');
+      }
+    }
+  }, [location]);
+
 
   return (
-    <div id={id} className="w-[90%] mx-auto max-lg:px-0 px-0 md:px-20 py-10 md:text-[20px] text-[16px]">
+    <div id="contactus" className="w-[90%] mx-auto max-lg:px-0 px-0 md:px-20 py-10 md:text-[20px] text-[16px]">
 <h2 className="md:text-[30px] text-[20px] font-bold text-center mb-4">Contact Us</h2>
 
       <p className="text-center text-custom-grey mb-10 max-w-[700px] mx-auto">
@@ -97,16 +148,19 @@ export const ContactUs = ({ id }) => {
             </div>
 
             <div className="flex gap-4 text-custom-grey flex-wrap">
-              <label className="flex items-center gap-2">
-                <input type="checkbox" value="Bulk" {...register("type")} />
-                Bulk
-              </label>
-              <label className="flex items-center gap-2">
-                <input type="checkbox" value="Individual" {...register("type")} />
-                Individual
-              </label>
-            </div>
-            {errors.type && <p className="text-red-500 text-sm">{errors.type.message}</p>}
+  <label className="flex items-center gap-2">
+    <input type="radio" value="Bulk" {...register("type")} />
+    Bulk
+  </label>
+  <label className="flex items-center gap-2">
+    <input type="radio" value="Individual" {...register("type")} />
+    Individual
+  </label>
+</div>
+{errors.type && <p className="text-red-500 text-sm">{errors.type.message}</p>}
+
+
+
 
             <div>
               <input
@@ -136,14 +190,15 @@ export const ContactUs = ({ id }) => {
               ></textarea>
               {errors.message && <p className="text-red-500 text-sm">{errors.message.message}</p>}
             </div>
+ {screenshot && (
+            <>
+              <p>Attached Screenshot of Estimation:</p>
+              <img src={screenshot} alt="Estimation Screenshot" style={{ width: '100%', maxWidth: '500px' }} />
+             
+            </>
+          )}
 
-            <div className="flex justify-center">
-              <img
-                src={CONTACT}
-                alt="Avatar"
-                className="w-16 h-16 rounded-full object-cover"
-              />
-            </div>
+            
 
             <button
               type="submit"

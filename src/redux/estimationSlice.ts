@@ -1,13 +1,19 @@
+// estimationSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Product {
   id: string;
   img: string;
+  name: string;
   gsm: string;
   color: string;
   size: string;
   type: string;
   price: number;
+  total: number;
+  discount: number;
+  description: string;
+  originalPrice: number;
 }
 
 interface EstimationState {
@@ -26,13 +32,13 @@ const estimationSlice = createSlice({
       state.products.push(action.payload);
     },
     removeProduct: (state, action: PayloadAction<string>) => {
-      state.products = state.products.filter(product => product.id !== action.payload);
+      state.products = state.products.filter((p) => p.id !== action.payload);
     },
-    clearAll: (state) => {
+    removeAllProducts: (state) => {
       state.products = [];
     },
   },
 });
 
-export const { addProduct, removeProduct, clearAll } = estimationSlice.actions;
-export const estimationReducer=estimationSlice.reducer;
+export const { addProduct, removeProduct, removeAllProducts } = estimationSlice.actions;
+export const estimationReducer = estimationSlice.reducer;

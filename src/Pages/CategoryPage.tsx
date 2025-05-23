@@ -55,7 +55,7 @@ export const CategoryPage = () => {
               <div
                 key={category.id}
                 className="flex flex-col items-center text-xl cursor-pointer"
-                onClick={() => navigate(`/products/${category.id}`)}
+                onClick={() => navigate(`/products/?categoryId=${category.id}`)}
               >
                 <img
                   src={category.image}

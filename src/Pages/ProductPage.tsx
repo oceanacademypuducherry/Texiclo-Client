@@ -11,7 +11,6 @@ import { Pagination } from "../common/Pagination";
 import { Footer, Navbar, SearchBar } from "../common";
 
 
-
 export const ProductPage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -20,11 +19,13 @@ export const ProductPage = () => {
   const categoryId = searchParams.get("categoryId");
   const collectionId = searchParams.get("collectionId");
   const [searchQuery, setSearchQuery] = useState("");
-
-  const viewProducts = useSelector((state: RootState) => state.viewproduct.products);
-const selectedProduct = useSelector((state: RootState) => state.viewproduct.selectedProduct);
+  // Convert categoryId to number if your product.categoryId is a number
+  const categoryIdNum = categoryId ? Number(categoryId) : null;
 
   const products = useSelector((state: RootState) => state.products.products);
+  const varientProduct = useSelector((state:RootState)=> state.viewproduct.products)
+  console.log(varientProduct,"varientProduct");
+  
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
@@ -45,28 +46,52 @@ const selectedProduct = useSelector((state: RootState) => state.viewproduct.sele
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage]);
-  
-  // Filter products based on category and collection
-  // const filteredProducts = products.filter((product) => {
-  //   const matchCategory = categoryId ? String(product.categoryId) === String(categoryId) : true;
-  //   const matchCollection = collectionId ? String(product.collectionId) === String(collectionId) : true;
-  //   return matchCategory && matchCollection;
-  // });
 
-  const filteredProducts = products.filter((product) => {
-    const matchCategory = categoryId ? String(product.categoryId) === String(categoryId) : true;
-    const matchCollection = collectionId ? String(product.collectionId) === String(collectionId) : true;
-    const matchSearch =
-      product.name.toLowerCase().includes(searchQuery) ||
-      product.color.toLowerCase().includes(searchQuery) ||
-      product.type.toLowerCase().includes(searchQuery);
-    return matchCategory && matchCollection && matchSearch;
-  });
+//  const filteredProducts = products.filter(product => product.categoryId === categoryIdNum);
+
+//   console.log(filteredProducts,"filteredProducts")
+
+// Assume this categoryId to filter on
+const filterCategoryId = categoryIdNum;
+
+// Step 1: Filter products by categoryId
+const filteredProductsByCategory = products.filter(p => p.categoryId === filterCategoryId);
+
+console.log(filteredProductsByCategory,"filteredProductsByCategory");
+
+
+// Step 2: Get filtered product IDs
+const filteredProductIds = filteredProductsByCategory.map(p => p.id);
+
+// Step 3: Find variants with productId in filtered product IDs
+const filteredVariants = viewproducts.filter(v => filteredProductIds.includes(v.productId));
+
+// Step 4: Get variant IDs from filtered variants
+const filteredVariantIds = filteredVariants.map(v => v.id);
+
+// Step 5: Filter viewProducts to only those with ids in filteredVariantIds
+const filteredViewProducts = viewproducts.filter(vp => filteredVariantIds.includes(vp.id));
+
+console.log(filteredViewProducts,"sjfskjfk");
+
   
 
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+ const finalFilteredProducts = filteredViewProducts.filter((product) => {
+  const searchableText = `
+    ${product.name}
+    ${product.color}
+    ${product.type}
+    ${product.total}
+  `.toLowerCase();
+
+  return searchableText.includes(searchQuery.toLowerCase());
+});
+
+const totalPages = Math.ceil(finalFilteredProducts.length / itemsPerPage);
+const startIndex = (currentPage - 1) * itemsPerPage;
+const currentProducts = finalFilteredProducts.slice(startIndex, startIndex + itemsPerPage);
+
+
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -84,9 +109,9 @@ const selectedProduct = useSelector((state: RootState) => state.viewproduct.sele
       setCurrentPage(1); 
     }} />
   </div>
-  <p className="text-custom-grey text-xl self-end md:self-center">
+  {/* <p className="text-custom-grey text-xl self-end md:self-center">
     Showing {currentProducts.length} of {filteredProducts.length} results
-  </p>
+  </p> */}
 </div>
 
 
@@ -95,11 +120,11 @@ const selectedProduct = useSelector((state: RootState) => state.viewproduct.sele
             currentProducts.map((product) => (
               <div key={product.id} className="flex flex-col items-center text-center cursor-pointer"
                onClick={() => navigate(`/viewproduct/${product.id}`)}>
-                <img src={product.image} alt={product.name} className="w-full h-auto rounded-md shadow-sm" />
+                <img src={product.image.Image} alt={product.name} className="w-full h-auto rounded-md shadow-sm" />
                 <h3 className="mt-5 text-xl font-medium mb-3">
                   {product.name} ({product.color}, {product.type})
                 </h3>
-                <p className="text-custom-grey text-xl mb-3">₹{product.price}</p>
+                <p className="text-custom-grey text-xl mb-3">₹{product.total}</p>
                 {/* <div className="flex items-center justify-center gap-3 mt-2">
   <button
     className="w-10 h-10 flex items-center justify-center rounded-full border"

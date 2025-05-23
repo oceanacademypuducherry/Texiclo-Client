@@ -1,28 +1,54 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../redux/estimationSlice";
-import { CROPTOP, HOODIE, POLO, TSHIRT } from "../assets";
-import { RootState } from "../redux";
+import { RootState, setAllProducts, setProducts } from "../redux";
+import {viewproducts} from "../constant/viewproduct";
+import { products as mockProducts } from "../constant/Product";
 
 export const ProductGalleryDescription: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { productId } = useParams();
 
-  const selectedProduct = useSelector((state: RootState) => state.viewproduct.selectedProduct);
+  const selectedProduct = useSelector((state: RootState) => state.viewproduct.products);
+  const filterData = selectedProduct.filter(p => p.id === parseInt(productId || "0"));
+  const specificProductData = filterData[0];
 
-  const [selectedImage, setSelectedImage] = useState<string>(
-    selectedProduct?.image?.frontImage || CROPTOP
-  );
-  const [gsm, setGsm] = useState<string>(selectedProduct?.GSM?.[0] || "120");
-  const [color, setColor] = useState<string>(selectedProduct?.color || "White");
-  const [size, setSize] = useState<string>(selectedProduct?.size || "M");
-  const [type, setType] = useState<string>(selectedProduct?.type || "full sleeve");
+  if (!specificProductData) {
+    return (
+      <div className="text-center py-20 text-xl text-gray-600">
+        Loading product details...
+      </div>
+    );
+  }
 
-  // Default price calculation
-  const basePrice = selectedProduct?.price || 500;
-  const discount = 0.2; // 20% discount
-  const price = Math.round(basePrice - basePrice * discount);
+  const [gsm, setGsm] = useState<string>(specificProductData?.GSM || "120");
+  const [color, setColor] = useState<string>(specificProductData?.color || "White");
+  const [size, setSize] = useState<string>(specificProductData?.size || "M");
+  const [type, setType] = useState<string>(specificProductData?.type || "full sleeve");
+
+  const discount = specificProductData?.discount || 0;
+  const basePrice = specificProductData?.price || 500;
+  const price = Math.round(basePrice - (basePrice * discount) / 100);
+
+  const thumbnails = [
+    specificProductData?.image?.Image,
+    specificProductData?.image?.backImage,
+    specificProductData?.image?.frontImage,
+    specificProductData?.image?.sleeveImage,
+  ].filter(Boolean);
+
+  const [selectedImage, setSelectedImage] = useState(thumbnails[0]);
+
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -35,127 +61,82 @@ export const ProductGalleryDescription: React.FC = () => {
     });
   };
 
-  const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
-
   const handleAddToEstimation = () => {
     const newProduct = {
       id: Date.now().toString(),
       img: selectedImage,
+      name: specificProductData?.name,
       gsm,
       color,
       size,
       type,
       price,
-      name: selectedProduct?.name || "Mens printed t-shirts",
+      total: specificProductData?.total,
+      discount,
+      description: specificProductData?.description,
+      originalPrice: specificProductData?.price,
     };
+
     dispatch(addProduct(newProduct));
     navigate("/estimation");
   };
 
-  const thumbnails = [CROPTOP, TSHIRT, POLO, HOODIE];
+  useEffect(()=>{
+    console.log("hiii");
+    
+    dispatch(setAllProducts(viewproducts));
+    dispatch(setProducts(mockProducts));
+
+  },[])
 
   return (
-    <div className="mx-auto px-20 flex flex-col lg:flex-row gap-6 mb-16">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-20 flex flex-col lg:flex-row gap-8 mb-16">
       {/* LEFT: Image Gallery */}
-      <div className="flex gap-4">
-        <div className="flex flex-col gap-2 pt-2">
+     <div className="flex gap-4 flex-col items-start sm:flex-row sm:items-center lg:items-start">
+
+        {/* Thumbnails */}
+        <div className="flex sm:flex-col gap-2">
           {thumbnails.map((img, idx) => (
             <img
               key={idx}
               src={img}
               alt={`thumb-${idx}`}
               onMouseEnter={() => setSelectedImage(img)}
-              className={`w-16 h-16 object-cover border rounded cursor-pointer transition duration-200 ${
+              className={`w-16 h-16 sm:w-20 sm:h-20 object-contain border rounded cursor-pointer transition duration-200 ${
                 selectedImage === img ? "border-2 border-custom-grey" : "border"
               }`}
             />
           ))}
         </div>
-        <div className="w-96 h-96 border rounded">
-          <img src={selectedImage} alt="preview" className="w-full h-full object-cover" />
+
+        {/* Main Image */}
+        <div className="w-72 h-72 sm:w-96 sm:h-96 border rounded">
+          <img
+            src={selectedImage}
+            alt="preview"
+            className="w-full h-full object-contain"
+          />
         </div>
       </div>
 
       {/* RIGHT: Product Details */}
-      <div className="space-y-3 text-xl">
-        <h2 className="font-medium">
-          {selectedProduct?.name || "Mens printed t-shirts"}
-        </h2>
-        <p className="text-custom-grey text-xl">
-          {selectedProduct?.description ||
+      <div className="flex-1 space-y-3 text-base sm:text-lg lg:text-xl">
+        <h2 className="font-bold text-xl sm:text-2xl">{specificProductData?.name}</h2>
+        <p className="text-gray-700">
+          {specificProductData?.description ||
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tristique malesuada elit, ut facilisis tellus elementum id."}
         </p>
 
-        <p>
-          <span>GSM:</span>
-          <select
-            className="ml-2 border px-2 py-1 rounded text-xl"
-            value={gsm}
-            onChange={(e) => setGsm(e.target.value)}
-          >
-            {Array.from({ length: (500 - 120) / 20 + 1 }, (_, i) => 120 + i * 20).map((val) => (
-              <option key={val} value={val}>
-                {val} GSM
-              </option>
-            ))}
-          </select>
+        <p><span className="font-semibold">Color:</span> {color}</p>
+        <p><span className="font-semibold">Size:</span> {size}</p>
+        <p><span className="font-semibold">Type:</span> {type}</p>
+        <p><span className="font-semibold">Price:</span> ₹{price}</p>
+        <p className="text-custom-darkgreen ">
+          Discount applied: {discount}% Off
         </p>
 
-        <p>
-          <span>Color:</span>
-          <select
-            className="ml-2 border px-2 py-1 rounded text-xl"
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-          >
-            {["White", "Black", "Gray", "Navy Blue", "Red", "Blue", "Green", "Yellow"].map((col) => (
-              <option key={col}>{col}</option>
-            ))}
-          </select>
-        </p>
-
-        <p>
-          <span>Size:</span>
-          <select
-            className="ml-2 border px-2 py-1 rounded text-xl"
-            value={size}
-            onChange={(e) => setSize(e.target.value)}
-          >
-            {["XS", "S", "M", "L", "XL", "XXL", "3XL"].map((sz) => (
-              <option key={sz}>{sz}</option>
-            ))}
-          </select>
-        </p>
-
-        <p>
-          <span>Type:</span>
-          <select
-            className="ml-2 border px-2 py-1 rounded text-xl"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-          >
-            <option>full sleeve</option>
-            <option>sleeveless</option>
-            <option>crop full sleeve</option>
-            <option>crop sleeveless</option>
-          </select>
-        </p>
-
-        <p>
-          <span>Total:</span> ₹{price}
-        </p>
-
-        <p className="text-custom-darkgreen">Discount applied 20% Off</p>
-
-        <div className="flex gap-4 mt-4">
-          <label className="px-4 py-2 border rounded cursor-pointer">
+        <div className="flex flex-col sm:flex-row gap-4 mt-4">
+          <label className="px-4 py-2 border rounded cursor-pointer text-center sm:text-left">
             Upload & Preview
             <input
               type="file"

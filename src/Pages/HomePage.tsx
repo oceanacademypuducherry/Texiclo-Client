@@ -14,6 +14,7 @@ export  const HomePage = () => {
         element.scrollIntoView({ behavior: "smooth" });
       }
     }
+    
   }, [location]);
   return (
     <div>
