@@ -14,6 +14,7 @@ interface Product {
   discount: number;
   description: string;
   originalPrice: number;
+  quantity: number; // ✅ Add this
 }
 
 interface EstimationState {
@@ -29,7 +30,12 @@ const estimationSlice = createSlice({
   initialState,
   reducers: {
     addProduct: (state, action: PayloadAction<Product>) => {
-      state.products.push(action.payload);
+      const existing = state.products.find(p => p.id === action.payload.id);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        state.products.push({ ...action.payload, quantity: 1 });
+      }
     },
     removeProduct: (state, action: PayloadAction<string>) => {
       state.products = state.products.filter((p) => p.id !== action.payload);
@@ -37,8 +43,27 @@ const estimationSlice = createSlice({
     removeAllProducts: (state) => {
       state.products = [];
     },
+    incrementQuantity: (state, action: PayloadAction<string>) => {
+      const product = state.products.find(p => p.id === action.payload);
+      if (product) {
+        product.quantity += 1;
+      }
+    },
+    decrementQuantity: (state, action: PayloadAction<string>) => {
+      const product = state.products.find(p => p.id === action.payload);
+      if (product && product.quantity > 1) {
+        product.quantity -= 1;
+      }
+    },
   },
 });
 
-export const { addProduct, removeProduct, removeAllProducts } = estimationSlice.actions;
+export const {
+  addProduct,
+  removeProduct,
+  removeAllProducts,
+  incrementQuantity,
+  decrementQuantity,
+} = estimationSlice.actions;
+
 export const estimationReducer = estimationSlice.reducer;
