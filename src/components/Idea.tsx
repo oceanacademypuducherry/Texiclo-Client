@@ -81,7 +81,7 @@ export const Idea = () => {
             You’ve Got The Ideas, We’ve Got The Tools
           </h2>
           <p className="text-custom-grey text-[16px] sm:text-[18px]">
-            T-shirt Printing for Everyone. Get a headstart with free design templates you can customize in a few clicks.
+           Create your perfect custom T-shirt effortlessly with our easy-to-use design tools. Start designing today and bring your ideas to life.
           </p>
           <ul className="space-y-4 text-gray-800 text-[14px] sm:text-[18px] px-0">
   {[

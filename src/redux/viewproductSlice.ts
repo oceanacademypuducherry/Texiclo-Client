@@ -8,14 +8,14 @@ interface Product {
     frontImage: string;
     backImage: string;
     sleeveImage: string;
-    Image: string; // If this is the same as sleeveImage, consider removing one
+    Image: string; 
   };
   description: string;
-  GSM: number[];         // List of GSM values
-  color: string;         // If this should be multiple colors, use: string[]
-  size: string;          // If this should be multiple sizes, use: string[]
+  GSM: number[];         
+  color: string;        
+  size: string;          
   total: number;
-  type: string;          // If this should be multiple types, use: string[]
+  type: string;          
   quantity: number;
   discount: number;
   productId: number;

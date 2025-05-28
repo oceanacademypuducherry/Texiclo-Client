@@ -1,8 +1,9 @@
 import { TEXICLO } from "../assets";
-import { FaFacebookF } from "react-icons/fa6";
-import { FaTwitter } from "react-icons/fa";
-import { FaYoutube } from "react-icons/fa";
-import { FaSquareInstagram } from "react-icons/fa6";
+import { SiLinktree } from "react-icons/si";
+import { FaTelegramPlane } from "react-icons/fa";
+// import { FaYoutube } from "react-icons/fa";
+// import { FaSquareInstagram } from "react-icons/fa6";
+import { CONTACT_INFO } from "../constant";
 
 export const Footer = () => {
   return (
@@ -17,20 +18,36 @@ export const Footer = () => {
             It high at my mind by roof.
           </p>
           <div className="flex gap-4 text-xl md:text-[22px] justify-center md:justify-start">
-            <a href="#" className="hover:text-white transition-colors"><FaTwitter /></a>
-            <a href="#" className="hover:text-white transition-colors"><FaFacebookF /></a>
-            <a href="#" className="hover:text-white transition-colors"><FaYoutube /></a>
-            <a href="#" className="hover:text-white transition-colors"><FaSquareInstagram /></a>
+            <a
+  href="https://t.me/Texiclo_bot"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="hover:text-red-500 transition-colors"
+>
+  <FaTelegramPlane />
+</a>
+
+<a
+  href="https://linktr.ee/Texiclo"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="hover:text-red-500 transition-colors"
+>
+  <SiLinktree />
+</a>
+
+            {/* <a href="#" className="hover:text-white transition-colors"><FaYoutube /></a>
+            <a href="#" className="hover:text-white transition-colors"><FaSquareInstagram /></a> */}
           </div>
         </div>
 
         <div className="flex flex-col items-center text-center">
           <h3 className="font-bold mb-4 text-lg md:text-xl">Get In Touch</h3>
-          <p className="mb-2">hello@teecheap.com</p>
-          <p className="font-bold mb-2">+02 036 038 6686</p>
+          <p className="mb-2">{CONTACT_INFO.email}</p>
+          <p className="font-bold mb-2">{CONTACT_INFO.phones[0]}</p>
           <p>
-            25 Lipsum Place, Suite 0960<br />
-            Las Vegas
+            {CONTACT_INFO.address}
+           
           </p>
         </div>
 

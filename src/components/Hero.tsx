@@ -11,10 +11,10 @@ export const  Hero=()=> {
   T-Shirt Printing<br/>
    Made Simple For<br/> Everyone
 </h1>
-          <p className="text-custom-grey text-base md:text-[20px]">
-            Lorem ipsum dolor sit amet, consectetur<br/>
-            adipiscing elit maecenas quis iaculis quam<br/>
-             auris ferment.
+          <p className="text-custom-grey text-base md:text-[20px] leading-relaxed">
+               Custom T-shirt printing made simple and <br/>easier for all.
+Perfect for businesses, <br/>events, or 
+showcasing your unique style.
           </p>
           {/* <button className="bg-gray-100 text-custom-black font-bold px-6 py-2 rounded-md shadow hover:bg-gray-100 transition">
             Click

@@ -1,6 +1,7 @@
 import { HOODIE, POLO, SWEATSHIRTS, TSHIRT } from "../assets";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const products = [
   { id: 1, name: "Hoodie (black, full sleeve)", price: "₹620", image: POLO },
@@ -14,6 +15,7 @@ const products = [
 export const RelatedProducts = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1000);
+  const navigate = useNavigate();
 
   const scroll = (offset: number) => {
     if (scrollRef.current) {
@@ -29,9 +31,12 @@ export const RelatedProducts = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const handleProductClick = (id: number) => {
+    navigate(`/product/${id}`);
+  };
+
   return (
     <div className="relative w-full px-4 sm:px-8 md:px-16 lg:px-20 max-w-screen-xl mx-auto my-10">
-      {/* Chevron Buttons (Desktop Only) */}
       {isDesktop && (
         <>
           <button
@@ -59,7 +64,8 @@ export const RelatedProducts = () => {
         {products.map((product) => (
           <div
             key={product.id}
-            className="min-w-[250px] shrink-0 rounded-xl overflow-hidden text-center"
+            onClick={() => handleProductClick(product.id)}
+            className="min-w-[250px] shrink-0 rounded-xl overflow-hidden text-center cursor-pointer hover:shadow-lg transition"
           >
             <img
               src={product.image}

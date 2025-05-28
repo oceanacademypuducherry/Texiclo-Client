@@ -61,25 +61,28 @@ export const ProductGalleryDescription: React.FC = () => {
     });
   };
 
-  const handleAddToEstimation = () => {
-    const newProduct = {
-      id: Date.now().toString(),
-      img: selectedImage,
-      name: specificProductData?.name,
-      gsm,
-      color,
-      size,
-      type,
-      price,
-      total: specificProductData?.total,
-      discount,
-      description: specificProductData?.description,
-      originalPrice: specificProductData?.price,
-    };
+const handleAddToEstimation = () => {
+  const uniqueId = `${specificProductData?.name}-${gsm}-${color}-${size}-${type}`;
 
-    dispatch(addProduct(newProduct));
-    navigate("/estimation");
+  const newProduct = {
+    id: uniqueId,
+    img: selectedImage,
+    name: specificProductData?.name,
+    gsm,
+    color,
+    size,
+    type,
+    price,
+    total: specificProductData?.total,
+    discount,
+    description: specificProductData?.description,
+    originalPrice: specificProductData?.price,
   };
+
+  dispatch(addProduct(newProduct));
+  navigate("/estimation");
+};
+
 
   useEffect(()=>{
     console.log("hiii");

@@ -39,22 +39,35 @@ export const ProductPage = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage]);
 
-  const filterCategoryId = categoryIdNum;
-  const filteredProductsByCategory = products.filter(p => p.categoryId === filterCategoryId);
-  const filteredProductIds = filteredProductsByCategory.map(p => p.id);
-  const filteredVariants = viewproducts.filter(v => filteredProductIds.includes(v.productId));
-  const filteredVariantIds = filteredVariants.map(v => v.id);
-  const filteredViewProducts = viewproducts.filter(vp => filteredVariantIds.includes(vp.id));
+  // Step 1: Filter products by both categoryId and collectionId
+const filteredProducts = products.filter((product) => {
+  const categoryMatch = categoryId ? product.categoryId === Number(categoryId) : true;
+  const collectionMatch = collectionId ? product.collectionId === Number(collectionId) : true;
+  return categoryMatch && collectionMatch;
+});
 
-  const finalFilteredProducts = filteredViewProducts.filter((product) => {
-    const searchableText = `
-      ${product.name}
-      ${product.color}
-      ${product.type}
-      ${product.total}
-    `.toLowerCase();
-    return searchableText.includes(searchQuery.toLowerCase());
-  });
+// Step 2: Extract matched product IDs
+const filteredProductIds = filteredProducts.map(p => p.id);
+
+// Step 3: Get all variant products that match the filtered product IDs
+const filteredVariants = viewproducts.filter(v => filteredProductIds.includes(v.productId));
+
+// Step 4: Further filter viewproducts that match variant IDs
+const filteredVariantIds = filteredVariants.map(v => v.id);
+const filteredViewProducts = viewproducts.filter(vp => filteredVariantIds.includes(vp.id));
+
+// Step 5: Apply search filter
+const finalFilteredProducts = filteredViewProducts.filter((product) => {
+  const searchableText = `
+    ${product.name}
+    ${product.color}
+    ${product.type}
+    ${product.total}
+    ${product.discount}
+  `.toLowerCase();
+  return searchableText.includes(searchQuery.toLowerCase());
+});
+
 
   const totalPages = Math.ceil(finalFilteredProducts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -70,14 +83,15 @@ export const ProductPage = () => {
         <h2 className="text-2xl sm:text-3xl font-bold text-center mb-14">Products</h2>
 
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
-          <div className="w-full md:w-1/2">
-            <SearchBar
-              onSearch={(query) => {
-                setSearchQuery(query);
-                setCurrentPage(1);
-              }}
-            />
-          </div>
+          <div className="w-3/4 mx-auto md:mx-0 sm:w-full md:w-1/2">
+  <SearchBar
+    onSearch={(query) => {
+      setSearchQuery(query);
+      setCurrentPage(1);
+    }}
+  />
+</div>
+
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16">
@@ -85,7 +99,7 @@ export const ProductPage = () => {
             currentProducts.map((product) => (
               <div
                 key={product.id}
-                className="flex flex-col items-center text-center cursor-pointer bg-white shadow-md rounded-lg p-4 transition-transform hover:scale-[1.02]"
+                className="flex flex-col items-center text-center cursor-pointer bg-white  rounded-lg p-4 transition-transform hover:scale-[1.02]"
                 onClick={() => navigate(`/viewproduct/${product.id}`)}
               >
                 <img
@@ -97,6 +111,11 @@ export const ProductPage = () => {
                   {product.name} ({product.color}, {product.type})
                 </h3>
                 <p className="text-sm sm:text-base md:text-lg text-gray-600">₹{product.total}</p>
+               <p className="text-sm sm:text-base md:text-lg text-green-600">
+  Discount {product.discount}% Off
+</p>
+
+
               </div>
             ))
           ) : (

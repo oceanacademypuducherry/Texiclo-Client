@@ -34,7 +34,9 @@ export const Product = () => {
       <div className="text-center mb-12">
         <h2 className="text-[20px] md:text-3xl font-bold">Choose Your Category</h2>
         <p className="text-custom-grey mt-2 max-w-xl mx-auto text-[16px] md:text-[20px]">
-          Lorem ipsum dolor sit amet, consectetur adipiscing maecenas quis iaculis quam.
+          Explore a variety of categories to create unique T-shirts that match your personality.
+
+
         </p>
       </div>
 

@@ -7,7 +7,8 @@ export const Print = () => {
         T-shirt Printing Made Easy
       </h2>
       <p className="text-custom-grey sm:text-base md:text-[20px] max-w-2xl mx-auto mb-3 sm:mb-12">
-        Suspendisse et laoreet lorem, ut condimentum diam finibus neque id id erat vulputate in tristique dui mattis.
+        Design your own custom T-shirts effortlessly with our easy-to-use tools.
+From idea to print, we simplify every step of the process.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-10 items-start">

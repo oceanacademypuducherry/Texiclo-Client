@@ -29,14 +29,18 @@ const estimationSlice = createSlice({
   name: "estimation",
   initialState,
   reducers: {
-    addProduct: (state, action: PayloadAction<Product>) => {
-      const existing = state.products.find(p => p.id === action.payload.id);
-      if (existing) {
-        existing.quantity += 1;
-      } else {
-        state.products.push({ ...action.payload, quantity: 1 });
-      }
-    },
+   addProduct: (state, action: PayloadAction<Product>) => {
+  const existing = state.products.find(
+    (p) => p.id === action.payload.id
+  );
+
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    state.products.push({ ...action.payload, quantity: 1 });
+  }
+},
+
     removeProduct: (state, action: PayloadAction<string>) => {
       state.products = state.products.filter((p) => p.id !== action.payload);
     },
