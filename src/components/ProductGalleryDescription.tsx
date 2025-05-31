@@ -3,8 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../redux/estimationSlice";
 import { RootState, setAllProducts, setProducts } from "../redux";
-import {viewproducts} from "../constant/viewproduct";
+import { viewproducts } from "../constant/viewproduct";
 import { products as mockProducts } from "../constant/Product";
+import { Preview } from "./Preview";
 
 export const ProductGalleryDescription: React.FC = () => {
   const navigate = useNavigate();
@@ -15,18 +16,13 @@ export const ProductGalleryDescription: React.FC = () => {
   const filterData = selectedProduct.filter(p => p.id === parseInt(productId || "0"));
   const specificProductData = filterData[0];
 
-  if (!specificProductData) {
-    return (
-      <div className="text-center py-20 text-xl text-gray-600">
-        Loading product details...
-      </div>
-    );
-  }
-
   const [gsm, setGsm] = useState<string>(specificProductData?.GSM || "120");
   const [color, setColor] = useState<string>(specificProductData?.color || "White");
   const [size, setSize] = useState<string>(specificProductData?.size || "M");
   const [type, setType] = useState<string>(specificProductData?.type || "full sleeve");
+  const [showModal, setShowModal] = useState(false);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [selectedImage, setSelectedImage] = useState<string>("");
 
   const discount = specificProductData?.discount || 0;
   const basePrice = specificProductData?.price || 500;
@@ -39,7 +35,9 @@ export const ProductGalleryDescription: React.FC = () => {
     specificProductData?.image?.sleeveImage,
   ].filter(Boolean);
 
-  const [selectedImage, setSelectedImage] = useState(thumbnails[0]);
+  useEffect(() => {
+    setSelectedImage(thumbnails[0] || "");
+  }, [thumbnails]);
 
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -56,47 +54,48 @@ export const ProductGalleryDescription: React.FC = () => {
 
     const fileArray: File[] = Array.from(files);
     Promise.all(fileArray.map(fileToBase64)).then((base64Images: string[]) => {
-      localStorage.setItem("uploadedImages", JSON.stringify(base64Images));
-      navigate("/preview");
+      setUploadedImages(base64Images);
+      setShowModal(true);
     });
   };
 
-const handleAddToEstimation = () => {
-  const uniqueId = `${specificProductData?.name}-${gsm}-${color}-${size}-${type}`;
-
-  const newProduct = {
-    id: uniqueId,
-    img: selectedImage,
-    name: specificProductData?.name,
-    gsm,
-    color,
-    size,
-    type,
-    price,
-    total: specificProductData?.total,
-    discount,
-    description: specificProductData?.description,
-    originalPrice: specificProductData?.price,
+  const handleAddToEstimation = () => {
+    const uniqueId = `${specificProductData?.name}-${gsm}-${color}-${size}-${type}`;
+    const newProduct = {
+      id: uniqueId,
+      img: selectedImage,
+      name: specificProductData?.name,
+      gsm,
+      color,
+      size,
+      type,
+      price,
+      total: specificProductData?.total,
+      discount,
+      description: specificProductData?.description,
+      originalPrice: specificProductData?.price,
+    };
+    dispatch(addProduct(newProduct));
+    navigate("/estimation");
   };
 
-  dispatch(addProduct(newProduct));
-  navigate("/estimation");
-};
-
-
-  useEffect(()=>{
-    console.log("hiii");
-    
+  useEffect(() => {
     dispatch(setAllProducts(viewproducts));
     dispatch(setProducts(mockProducts));
+  }, []);
 
-  },[])
+  if (!specificProductData) {
+    return (
+      <div className="text-center py-20 text-xl text-gray-600">
+        Loading product details...
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-20 flex flex-col lg:flex-row gap-8 mb-16">
       {/* LEFT: Image Gallery */}
-     <div className="flex gap-4 flex-col items-start sm:flex-row sm:items-center lg:items-start">
-
+      <div className="flex gap-4 flex-col items-start sm:flex-row sm:items-center lg:items-start">
         {/* Thumbnails */}
         <div className="flex sm:flex-col gap-2">
           {thumbnails.map((img, idx) => (
@@ -157,6 +156,27 @@ const handleAddToEstimation = () => {
           </button>
         </div>
       </div>
+
+      {/* Modal */}
+   {showModal && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white rounded-lg shadow-lg w-full max-w-5xl max-h-[90vh] overflow-y-auto p-6 relative">
+      <button
+        onClick={() => setShowModal(false)}
+        className="absolute top-2 right-2 text-black text-2xl font-bold hover:text-gray-600"
+      >
+        &times;
+      </button>
+     <Preview images={uploadedImages} onClose={() => setShowModal(false)} />
+
+    </div>
+  </div>
+)}
+
+
+
+
+
     </div>
   );
 };

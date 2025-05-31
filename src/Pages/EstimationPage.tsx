@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../app/store";
+import { useState } from "react";
 import {
   removeProduct,
   removeAllProducts,
@@ -10,16 +11,14 @@ import {
 import { Navbar, Footer } from "../common";
 import html2canvas from "html2canvas";
 import { useNavigate } from "react-router-dom";
-import { useState } from 'react';
-import {ContactForm} from "../components/ContactForm";
+import { ContactForm } from "../components";
 
 export const EstimationPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const products = useSelector((state: RootState) => state.estimation.products);
-const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [screenshot, setScreenshot] = useState<string | null>(null);
-
 
   // Total price based on quantity
  const total = products.reduce(
@@ -29,19 +28,20 @@ const [showModal, setShowModal] = useState(false);
 );
 
 
-    const handleContactClick = async () => {
-    const element = document.getElementById('estimation-section');
-    if (!element) return;
+ const handleContactClick = async () => {
+  const element = document.getElementById('estimation-section');
+  if (!element) return;
 
-    try {
-      const canvas = await html2canvas(element, { scale: 2 });
-      const image = canvas.toDataURL('image/png');
-      setScreenshot(image);
-      setShowModal(true);
-    } catch (error) {
-      console.error('Error capturing estimation section:', error);
-    }
-  };
+  try {
+    const canvas = await html2canvas(element, { scale: 2 });
+    const image = canvas.toDataURL('image/png');
+    setScreenshot(image);
+    setShowModal(true); // This must be triggered
+  } catch (error) {
+    console.error('Error capturing estimation section:', error);
+  }
+};
+
 
   return (
     <div className="min-h-screen flex flex-col bg-white" id="estimation-section">
@@ -155,21 +155,14 @@ const [showModal, setShowModal] = useState(false);
 
       <Footer />
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-lg relative">
-            <button
-  onClick={() => setShowModal(false)}
-  className="absolute top-2 right-3 text-2xl font-bold text-gray-600 hover:text-black"
-  aria-label="Close"
->
-  ×
-</button>
-<h2 className="text-xl font-bold mb-4 mt-2 text-center">Contact Form</h2>
-<ContactForm screenshot={screenshot || ''} onClose={() => setShowModal(false)} />
+  <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div className="bg-white p-6 rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-lg relative">
+      <h2 className="text-xl font-bold mb-4">Contact Form</h2>
+      <ContactForm requireScreenshot  screenshot={screenshot || ''} onClose={() => setShowModal(false)} />
+    </div>
+  </div>
+)}
 
-          </div>
-        </div>
-      )}
     </div>
   );
 };

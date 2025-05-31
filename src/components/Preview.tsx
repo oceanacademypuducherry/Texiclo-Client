@@ -1,8 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 import { FRONTIMG } from "../assets"; // plain t-shirt image
+import { ContactForm } from "./ContactForm";
 
-export const Preview: React.FC = () => {
+interface PreviewProps {
+  images: string[];
+  onClose: () => void;
+}
+
+export const Preview: React.FC<PreviewProps> = ({ images, onClose }) => {
+
   const positions = [
     "left chest",
     "center chest",
@@ -17,13 +26,24 @@ export const Preview: React.FC = () => {
   const [selectedImages, setSelectedImages] = useState<Record<string, string>>({});
   const [checkedPositions, setCheckedPositions] = useState<Record<string, boolean>>({});
   const [currentSlide, setCurrentSlide] = useState<number>(-1); // -1 shows plain t-shirt
+  const [showContactModal, setShowContactModal] = useState(false);
 
-  useEffect(() => {
-    const stored = localStorage.getItem("uploadedImages");
-    if (stored) {
-      setUploadedImages(JSON.parse(stored));
-    }
-  }, []);
+  const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
+
+const openContactForm = async () => {
+  const blob = await handleSavePDF(false);
+  setPdfBlob(blob);
+  setShowContactModal(true);
+};
+
+
+  const closeContactForm = () => setShowContactModal(false);
+  const previewRef = useRef<HTMLDivElement>(null); // for capturing the preview area
+
+ useEffect(() => {
+  setUploadedImages(images);
+}, [images]);
+
 
   const handleImageSelect = (position: string, imageData: string) => {
     setSelectedImages((prev) => ({
@@ -79,13 +99,85 @@ export const Preview: React.FC = () => {
     "full back": "top-[20%] left-[20%] w-[60%]",
   };
 
+const handleSavePDF = async (shouldDownload = false): Promise<Blob> => {
+  if (!previewRef.current) throw new Error("No preview available");
+
+  const pdf = new jsPDF({
+    orientation: "portrait",
+    unit: "pt",
+    format: "a4",
+  });
+
+  const slides = getConfiguredPreviews();
+  const originalSlide = currentSlide;
+
+  const marginX = 30;
+  const marginY = 30;
+  const spacingY = 20;
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+
+  const availableHeight = pageHeight - marginY * 2 - spacingY * 2;
+  const maxImgHeight = availableHeight / 3;
+  const maxImgWidth = pageWidth - marginX * 2;
+
+  let imageCount = 0;
+
+  for (let i = 0; i < slides.length; i++) {
+    setCurrentSlide(i);
+    await new Promise((resolve) => setTimeout(resolve, 300));
+
+    const canvas = await html2canvas(previewRef.current!, {
+      useCORS: true,
+      scale: 1.5, // Lower scale to reduce resolution
+    });
+
+    // Convert to JPEG with lower quality (0.6)
+    const imgData = canvas.toDataURL("image/jpeg", 0.6);
+
+    let imgWidth = maxImgWidth;
+    let imgHeight = (canvas.height / canvas.width) * imgWidth;
+
+    if (imgHeight > maxImgHeight) {
+      imgHeight = maxImgHeight;
+      imgWidth = (canvas.width / canvas.height) * imgHeight;
+    }
+
+    const xOffset = (pageWidth - imgWidth) / 2;
+    const yOffset = marginY + imageCount * (imgHeight + spacingY);
+
+    pdf.addImage(imgData, "JPEG", xOffset, yOffset, imgWidth, imgHeight);
+    imageCount++;
+
+    if (imageCount === 3 && i < slides.length - 1) {
+      pdf.addPage();
+      imageCount = 0;
+    }
+  }
+
+  setCurrentSlide(originalSlide);
+
+  if (shouldDownload) {
+    pdf.save("tshirt_preview.pdf");
+  }
+
+  return pdf.output("blob");
+};
+
+
+
+
+
+
+
+
   return (
     <div className="flex flex-col items-center p-10">
       <h2 className="text-2xl font-bold mb-6">Preview</h2>
 
       <div className="flex flex-col md:flex-row gap-20 w-full max-w-5xl mx-auto items-center justify-center">
         {/* Shirt Preview */}
-        <div className="relative w-[300px] h-[350px]">
+        <div ref={previewRef} className="relative w-[300px] h-[350px]">
           <img
             src={FRONTIMG}
             alt="shirt"
@@ -120,7 +212,7 @@ export const Preview: React.FC = () => {
           )}
         </div>
 
-        {/* Controls for selecting image & position */}
+        {/* Controls */}
         <div className="flex flex-col gap-2 text-left w-full max-w-md">
           {positions.map((pos, index) => (
             <div
@@ -161,13 +253,32 @@ export const Preview: React.FC = () => {
 
           {/* Action Buttons */}
           <div className="flex gap-4 mt-4">
-            <button className="bg-yellow-400 px-6 py-2 rounded font-semibold shadow">
-              Save as PDF
-            </button>
-            <button className="bg-yellow-400 px-6 py-2 rounded font-semibold shadow">
-              Contact for purchasing
-            </button>
+            <button
+  onClick={() => handleSavePDF(true)}
+  className="bg-yellow-400 px-6 py-2 rounded font-semibold shadow"
+>
+  Save as PDF
+</button>
+
+            <button
+          onClick={openContactForm}
+          className="bg-yellow-400 px-6 py-2 rounded font-semibold shadow"
+        >
+          Contact for purchasing
+        </button>
           </div>
+           {showContactModal && pdfBlob && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white p-6 rounded-lg w-[90%] max-w-lg relative">
+      <ContactForm
+        onClose={closeContactForm}
+        requireScreenshot={false}
+        pdfBlob={pdfBlob} // Pass blob here
+      />
+    </div>
+  </div>
+)}
+
         </div>
       </div>
     </div>

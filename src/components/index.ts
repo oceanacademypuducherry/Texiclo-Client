@@ -8,5 +8,6 @@ export * from "./Category";
 export * from "./ContactUs";
 export * from "./ProductGalleryDescription";
 export * from "./ContactForm";
+export * from "./Preview";
 
 

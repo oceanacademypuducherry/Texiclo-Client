@@ -1,28 +1,25 @@
+// src/components/ContactForm.tsx
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import React from 'react';
+import { useEffect, useState } from 'react';
 
 type ContactFormProps = {
+  screenshot?: string;
+  requireScreenshot?: boolean; // NEW
   onClose?: () => void;
-  screenshot?: string; // Add this line
+     pdfUrl?: string;
 };
 
 const schema = yup.object().shape({
-  name: yup
-    .string()
-    .required('Name is required')
-    .matches(/^[A-Za-z\s]+$/, 'Name should only contain letters and spaces'),
-  type: yup.string().required('Please select a type').oneOf(['Bulk', 'Individual']),
-  mobile: yup
-    .string()
-    .required('Mobile number is required')
-    .matches(/^[0-9]{10}$/, 'Enter a valid 10-digit number'),
+  name: yup.string().required('Name is required').matches(/^[A-Za-z\s]+$/, 'Name should only contain letters and spaces'),
+  type: yup.string().required('Please select a type').oneOf(['Bulk', 'Individual'], 'Invalid type selected'),
+  mobile: yup.string().required('Mobile number is required').matches(/^[0-9]{10}$/, 'Enter a valid 10-digit number'),
   subject: yup.string().required('Subject is required'),
   message: yup.string().required('Message is required'),
 });
 
-export const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
+export const ContactForm = ({ screenshot, onClose, requireScreenshot = false, pdfUrl  }: ContactFormProps) => {
   const {
     register,
     handleSubmit,
@@ -30,8 +27,23 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
     reset,
   } = useForm({ resolver: yupResolver(schema) });
 
-  const onSubmit = async (data: any) => {
+  const [image, setImage] = useState<string | null>(null);
+
+ useEffect(() => {
+  if (requireScreenshot) {
+    const img = screenshot || localStorage.getItem('estimationScreenshot');
+    if (img) setImage(img);
+  }
+}, [requireScreenshot, screenshot]);
+
+
+   const onSubmit = async (data: any) => {
     try {
+      if (image && requireScreenshot) data.screenshot = image;
+
+      if (pdfUrl) data.pdfUrl = pdfUrl;
+
+
       const response = await fetch('http://localhost:3000/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -42,18 +54,29 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
       if (response.ok) {
         alert('Form submitted successfully!');
         reset();
-        onClose?.(); // close modal if applicable
+        setImage(null);
+        onClose?.();
       } else {
         alert(result.message || 'Submission failed');
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error);       
       alert('An error occurred while submitting the form.');
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+     {onClose && (
+    <button
+      type="button"
+      onClick={onClose}
+      className="absolute top-2 right-5 text-black  text-2xl font-bold"
+      aria-label="Close"
+    >
+      ×
+    </button>
+  )}
       <div>
         <input
           type="text"
@@ -105,6 +128,13 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
         {errors.message && <p className="text-red-500 text-sm">{errors.message.message}</p>}
       </div>
 
+      {requireScreenshot && image && (
+        <>
+          <p>Attached Screenshot of Estimation:</p>
+          <img src={image} alt="Estimation Screenshot" style={{ width: '100%', maxWidth: '500px' }} />
+        </>
+      )}
+
       <button
         type="submit"
         className="block w-full bg-yellow-200 text-custom-black font-semibold py-3 rounded-md hover:bg-yellow-300 transition"
@@ -112,15 +142,17 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
         Submit
       </button>
 
-      {onClose && (
+      {/* {onClose && (
         <button
           type="button"
           onClick={onClose}
-          className="mt-3 block w-full text-center text-red-500"
+          className="mt-3 block w-full text-center text-red-500 hover:underline"
         >
           Cancel
         </button>
-      )}
+      )} */}
     </form>
   );
 };
+
+ 
