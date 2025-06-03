@@ -8,7 +8,7 @@ import { CONTACT_INFO } from "../constant";
 export const Footer = () => {
   return (
     <footer className="bg-custom-yellow text-custom-black py-8 px-4 sm:px-8 md:px-20 max-lg:px-0 text-base md:text-[20px]">
-      <div className="w-[90%] mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+      <div className="w-[90%] mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 max-w-[1500px] items-center">
         
        
         <div className="flex flex-col items-center md:items-start text-center md:text-left">

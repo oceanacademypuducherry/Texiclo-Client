@@ -5,7 +5,7 @@ export const Idea = () => {
    <section className="w-[87%] sm:[80%] mx-auto bg-white px-0 sm:px-6 px-0 lg:px-0 xl:px-0 pt-0 lg:pt-20 pb-0 md:pb-0 lg:pb-20 space-y-16">
 
       {/* Top Heading and Icons */}
-<div className="flex flex-col  below-1000:flex-wrap md:flex-row gap-5 sm:gap-10 items-start mt-2">
+<div className="flex flex-col  below-1000:flex-wrap md:flex-row gap-5 sm:gap-10 items-start mt-2 mx-auto max-w-[1500px]">
 
   {/* Left Heading (breaks only on md and above) */}
   <div className="flex-shrink-0 px-0 md:px-0">
@@ -65,9 +65,9 @@ export const Idea = () => {
 
 
       {/* Bottom Illustration and List Section */}
-      <div className="grid grid-cols-1 max-lg:grid-cols-1 md:grid-cols-2 gap-10 items-center">
+      <div className="grid grid-cols-1 max-lg:grid-cols-1 md:grid-cols-2 gap-10 items-center mx-auto max-w-[1500px]">
         {/* Illustration Image */}
-        <div className="flex justify-center md:justify-start">
+        <div className="flex justify-center md:justify-center">
           <img
             src={IDEAIMAGE}
             alt="Design Tools Illustration"

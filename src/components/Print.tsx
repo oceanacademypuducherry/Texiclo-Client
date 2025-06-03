@@ -2,7 +2,7 @@ import { STEP1, STEP2, STEP3 } from "../assets";
 
 export const Print = () => {
   return (
-    <section className="py-12 px-4 sm:px-6 md:px-10 bg-[#FFFDF8] text-center">
+    <section className="py-12 px-4 sm:px-6 md:px-10 bg-[#FFFDF8] text-center ">
       <h2 className="text-xl  md:text-3xl font-extrabold text-custom-black mb-4">
         T-shirt Printing Made Easy
       </h2>
@@ -11,7 +11,7 @@ export const Print = () => {
 From idea to print, we simplify every step of the process.
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-10 items-start">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-10 items-start mx-auto max-w-[1500px]">
         {/* Step 1 */}
         <div className="flex flex-col items-center space-y-4 ">
           <img src={STEP1} alt="Pick A Product" className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40" />

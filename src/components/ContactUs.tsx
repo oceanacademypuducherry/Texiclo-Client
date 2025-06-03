@@ -23,7 +23,7 @@ export const ContactUs = () => {
         Reach out to us for inquiries, support, or feedback. Our team is here to support you every step of the way.
       </p>
 
-      <div className="flex flex-col md:flex-row gap-10">
+      <div className="flex flex-col md:flex-row gap-10 max-w-[1500px] mx-auto">
         <div className="flex-1 space-y-6">
           <div className="flex items-start gap-4">
             <FaMapMarkerAlt className="text-custom-green text-xl mt-1" />

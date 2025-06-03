@@ -56,7 +56,7 @@ export const Product = () => {
       flex gap-4 py-4
       overflow-x-auto scroll-smooth 
       scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100
-      lg:overflow-x-hidden lg:scrollbar-none
+      lg:overflow-x-hidden lg:scrollbar-none justify-center
     "
   >
     {categories.map((category) => (
