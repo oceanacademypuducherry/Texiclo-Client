@@ -5,17 +5,17 @@ import { Footer, Navbar } from "../common";
 
 export  const HomePage = () => {
 
-  const location = useLocation();
+  // const location = useLocation();
 
-  useEffect(() => {
-    if (location.hash) {
-      const element = document.querySelector(location.hash);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    }
+  // useEffect(() => {
+  //   if (location.hash) {
+  //     const element = document.querySelector(location.hash);
+  //     if (element) {
+  //       element.scrollIntoView({ behavior: "smooth" });
+  //     }
+  //   }
     
-  }, [location]);
+  // }, [location]);
   return (
     <div>
      <Navbar/>

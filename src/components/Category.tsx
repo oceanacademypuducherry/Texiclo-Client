@@ -11,11 +11,13 @@ export const Product = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const categories = useSelector((state: RootState) => state.categories.categories);
+  const {data:categories} = useSelector((state: RootState) => state.category);
+  console.log(categories,"categories");
+  
 
-  useEffect(() => {
-    dispatch(setCategories(categoryData));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(setCategories(categoryData));
+  // }, [dispatch]);
 
   const scroll = (direction: "left" | "right") => {
     const container = scrollRef.current;
@@ -66,7 +68,7 @@ export const Product = () => {
         onClick={() => navigate(`/products/?categoryId=${category.id}`)} 
       >
         <img
-          src={category.image}
+          src={category.imageUrl}
           alt={category.name}
           className="w-full h-72 object-contain rounded-xl"
         />
