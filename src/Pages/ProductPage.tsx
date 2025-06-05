@@ -107,7 +107,7 @@ export const ProductPage = () => {
           </div>
         </div>
 
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16'>
+        {/* <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16'>
           {currentProducts.length > 0 ? (
             currentProducts.map(product => (
               <div
@@ -136,6 +136,32 @@ export const ProductPage = () => {
               No products found for this filter
             </p>
           )}
+        </div> */}
+         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16'>
+         
+              <div
+               
+                className='flex flex-col items-center text-center cursor-pointer bg-white  rounded-lg p-4 transition-transform hover:scale-[1.02]'
+                onClick={() => navigate(`/viewproduct/`)}
+              >
+                <img
+                  src=""
+                  alt=""
+                  className='w-full h-56 object-contain rounded-md mb-4'
+                />
+                <h3 className='text-base sm:text-lg md:text-xl font-medium mb-2'>
+                  {/* {product.name} ({product.color}, {product.type}) */}
+                  T shirt (Red, Hoodie)
+                </h3>
+                <p className='text-sm sm:text-base md:text-lg text-gray-600'>
+                  {/* ₹{product.total} */}
+                  ₹ 500
+                </p>
+                <p className='text-sm sm:text-base md:text-lg text-green-600'>
+                  Discount {60}% Off
+                </p>
+              </div>
+          
         </div>
 
         {totalPages > 1 && (

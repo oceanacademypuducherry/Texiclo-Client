@@ -1,14 +1,9 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setCollections } from "../redux/collectionSlice";
-
 import { RootState } from "../app/store";
-import { Collections } from "../constant/collection";
 
 export const Collection = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const {data:collections} = useSelector(
     (state: RootState) => state.collections

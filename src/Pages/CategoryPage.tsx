@@ -4,15 +4,19 @@ import { setCategories } from "../redux/categorySlice";
 import { RootState } from "../app/store";
 import { categoryData } from "../constant/category";
 import { useNavigate } from "react-router-dom";
-
 import { Pagination } from "../common/Pagination";
 import { Footer, Navbar, SearchBar } from "../common";
 
+interface CategoryData{
+  imageUrl: string,
+  name: string, 
+  _id: string
+}
 
 export const CategoryPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const categories = useSelector((state: RootState) => state.categories.categories);
+const categories = useSelector((state: RootState) => state.category?.data ?? []) as CategoryData[];
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -53,12 +57,12 @@ export const CategoryPage = () => {
           {currentCategories.length > 0 ? (
             currentCategories.map((category) => (
               <div
-                key={category.id}
+                key={category._id}
                 className="flex flex-col items-center text-xl cursor-pointer"
-                onClick={() => navigate(`/products/?categoryId=${category.id}`)}
+                onClick={() => navigate(`/products/?categoryId=${category._id}`)}
               >
                 <img
-                  src={category.image}
+                  src={category.imageUrl}
                   alt={category.name}
                   className="w-full h-auto rounded-md shadow-sm"
                 />
