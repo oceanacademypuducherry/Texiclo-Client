@@ -2,7 +2,8 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import { categoryReducer } from '../features/slice/categorySlice';
-import { collectionReducer, estimationReducer, productReducer, viewproductReducer } from '../redux';
+import {  estimationReducer, productReducer, viewproductReducer } from '../redux';
+import { collectionReducer } from '../features/slice/collectionSlice';
 // import {
 //   categoryReducer,
 //   collectionReducer,

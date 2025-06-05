@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GetAllCollectionAPI } from "../api/collectionAPI";
 
-export interface CollectionState {
+export interface CollectionTypeState {
   data: object | null;
   isError: boolean;
   isLoading: boolean;
@@ -9,13 +9,13 @@ export interface CollectionState {
   message: string | null;
 }
 
-export interface CandidatePayloadAction {
+export interface CollectionPayloadAction {
   data: object;
   message: string;
   status: string;
 }
 
-const initialState: CollectionState = {
+const initialState: CollectionTypeState = {
   data: null,
   isError: false,
   isLoading: false,
@@ -23,7 +23,7 @@ const initialState: CollectionState = {
   message: null,
 };
 
-const collectionSlice = createSlice({
+const collectionTypeSlice = createSlice({
   name: "/get-collection",
   initialState,
   reducers: {},
@@ -38,7 +38,7 @@ const collectionSlice = createSlice({
       .addCase(
         GetAllCollectionAPI.fulfilled,
         (state, action: PayloadAction<any>) => {
-          const { success, collectionType } = action.payload;
+          const { success, collectionType} = action.payload;
           state.isLoading = false;
           state.data = collectionType;
           state.message = null;
@@ -56,4 +56,4 @@ const collectionSlice = createSlice({
   },
 });
 
-export const categoryReducer = collectionSlice.reducer;
+export const collectionReducer = collectionTypeSlice.reducer;

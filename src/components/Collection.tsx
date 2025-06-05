@@ -10,16 +10,16 @@ export const Collection = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const collections = useSelector(
+  const {data:collections} = useSelector(
     (state: RootState) => state.collections
   );
   console.log(collections, "collections");
 
-  const shouldShowViewMore = collections.length >= 5;
+  const shouldShowViewMore = collections?.length >= 5;
 
-  useEffect(() => {
-    dispatch(setCollections(Collections));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(setCollections(Collections));
+  // }, [dispatch]);
 
   return (
     <section className="w-[90%] max-w-[1400px] mx-auto px-4 md:px-10 lg:px-14 pt-0 lg:pt-20 pb-10 md:pb-10 lg:pb-20">
@@ -35,7 +35,7 @@ export const Collection = () => {
               {/* Image Centering */}
               <div className="w-full h-full flex items-center justify-center">
                 <img
-                  src={collection.image}
+                  src={collection.imageUrl}
                   alt={collection.name}
                   className="max-w-full h-[300px] object-contain"
                 />
