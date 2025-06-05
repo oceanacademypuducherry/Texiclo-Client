@@ -61,7 +61,7 @@ export const Product = () => {
       lg:overflow-x-hidden lg:scrollbar-none justify-center
     "
   >
-    {categories.map((category) => (
+    {categories?.map((category) => (
       <div
         key={category.id}
         className="product-card flex-shrink-0 w-[250px] rounded-xl overflow-hidden text-center cursor-pointer  transition"

@@ -1,6 +1,8 @@
 import { HOODIE, POLO, SWEATSHIRTS, TSHIRT } from "../assets";
 import { IoIosSearch } from "react-icons/io";
 import { Footer, Navbar } from "../common";
+import { useSelector } from "react-redux";
+import { RootState } from "../app/store";
 
 
 
@@ -12,7 +14,8 @@ const products = [
   { name: "Hoodie(Green, crop sleeveless)", price: "₹562", image: SWEATSHIRTS },
 ];
 
-
+  // const collections = useSelector((state: RootState) => state.collections.collections);
+  // console.log(collections,"collections--------");
 export const NewCollectionPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
@@ -34,7 +37,7 @@ export const NewCollectionPage = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-          {products.map((product, index) => (
+          {products?.map((product, index) => (
             <div key={index} className="flex flex-col items-center text-center">
             <img
               src={product.image}
