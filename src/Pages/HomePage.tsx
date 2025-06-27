@@ -25,7 +25,7 @@ export  const HomePage = () => {
       <Print />
       <Collection/>
       <Product />
-      <ContactUs id="contact"/>
+      <ContactUs />
       <Footer />
     </div>
   );

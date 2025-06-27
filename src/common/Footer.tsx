@@ -4,6 +4,7 @@ import { FaTelegramPlane } from "react-icons/fa";
 // import { FaYoutube } from "react-icons/fa";
 // import { FaSquareInstagram } from "react-icons/fa6";
 import { CONTACT_INFO } from "../constant";
+import { Link } from "react-router-dom";
 
 export const Footer = () => {
   return (
@@ -53,12 +54,23 @@ export const Footer = () => {
 
         <div className="flex flex-col items-center md:items-end text-center md:text-center">
           <h3 className="font-bold mb-4 text-lg md:text-xl">Information</h3>
-          <ul className="space-y-2">
-            <li><a href="#" className="hover:underline">About Us</a></li>
-            <li><a href="#" className="hover:underline">Policies</a></li>
-            <li><a href="#" className="hover:underline">Contact Us</a></li>
-            <li><a href="#" className="hover:underline">Privacy Policies</a></li>
-          </ul>
+          
+
+<ul className="space-y-2">
+  <li>
+    <Link to="/about" className="hover:text-red-600 transition-colors">About Us</Link>
+  </li>
+  <li>
+    <Link to="/policies" className="hover:text-red-600 transition-colors">Policies</Link>
+  </li>
+  <li>
+    <Link to="/contactus" className="hover:text-red-600 transition-colors">Contact Us</Link>
+  </li>
+  <li>
+    <Link to="/privacy" className="hover:text-red-600 transition-colors">Privacy Policies</Link>
+  </li>
+</ul>
+
         </div>
 
       </div>

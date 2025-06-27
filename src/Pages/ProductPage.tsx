@@ -1,179 +1,130 @@
-import { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { setProducts } from '../redux/productSlice'
-import { setAllProducts } from '../redux/viewproductSlice'
-import { RootState } from '../redux'
-import { products as mockProducts } from '../constant/Product'
-import { viewproducts } from '../constant/viewproduct'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { Pagination } from '../common/Pagination'
-import { Footer, Navbar, SearchBar } from '../common'
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Footer, Navbar, SearchBar } from "../common";
+import { GetAllProductAPI } from "../features/api";
+
 
 export const ProductPage = () => {
-  const dispatch = useDispatch()
-  const location = useLocation()
-  const navigate = useNavigate()
-  const searchParams = new URLSearchParams(location.search)
-  const categoryId = searchParams.get('categoryId')
-  const collectionId = searchParams.get('collectionId')
-  const [searchQuery, setSearchQuery] = useState('')
-  const categoryIdNum = categoryId ? Number(categoryId) : null
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const searchParams = new URLSearchParams(location.search);
 
-  const products = useSelector((state: RootState) => state.products.products)
-  const varientProduct = useSelector(
-    (state: RootState) => state.viewproduct.products
-  )
+  const categoryId = searchParams.get("categoryId") || "";
+  const collectionId = searchParams.get("collectionId") || "";
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 6
-  const topRef = useRef<HTMLDivElement>(null)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
 
+  const topRef = useRef<HTMLDivElement>(null);
+
+  // 🔁 Fetch products based on page/category/collection
   useEffect(() => {
-    dispatch(setProducts(mockProducts))
-    dispatch(setAllProducts(viewproducts))
-  }, [dispatch])
+    const payload = {
+      categoryId,
+      collectionId,
+      search: searchQuery,
+      page: currentPage,
+    };
+    dispatch(GetAllProductAPI(payload));
+  }, [categoryId, collectionId, currentPage,searchQuery]);
 
-  useEffect(() => {
-    setCurrentPage(1)
-  }, [categoryId, collectionId])
+  const { data, isLoading, isError } = useSelector(
+    (state: RootState) => state.product
+  );
+  const products = data?.productValues || [];
+  const meta = data?.meta || { totalPages: 1, currentPage: 1, totalData: 0 };
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [currentPage])
+  const filteredProducts = products; // Already filtered from backend
 
-  // Step 1: Filter products by both categoryId and collectionId
-  const filteredProducts = products.filter(product => {
-    const categoryMatch = categoryId
-      ? product.categoryId === Number(categoryId)
-      : true
-    const collectionMatch = collectionId
-      ? product.collectionId === Number(collectionId)
-      : true
-    return categoryMatch && collectionMatch
-  })
-
-  // Step 2: Extract matched product IDs
-  const filteredProductIds = filteredProducts.map(p => p.id)
-
-  // Step 3: Get all variant products that match the filtered product IDs
-  const filteredVariants = viewproducts.filter(v =>
-    filteredProductIds.includes(v.productId)
-  )
-
-  // Step 4: Further filter viewproducts that match variant IDs
-  const filteredVariantIds = filteredVariants.map(v => v.id)
-  const filteredViewProducts = viewproducts.filter(vp =>
-    filteredVariantIds.includes(vp.id)
-  )
-
-  // Step 5: Apply search filter
-  const finalFilteredProducts = filteredViewProducts.filter(product => {
-    const searchableText = `
-    ${product.name}
-    ${product.color}
-    ${product.type}
-    ${product.total}
-    ${product.discount}
-  `.toLowerCase()
-    return searchableText.includes(searchQuery.toLowerCase())
-  })
-
-  const totalPages = Math.ceil(finalFilteredProducts.length / itemsPerPage)
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const currentProducts = finalFilteredProducts.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  )
+  const handlePageChange = (pageNum: number) => {
+    setCurrentPage(pageNum);
+  };
 
   return (
-    <div className='min-h-screen flex flex-col bg-white'>
+    <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
-
-      <main className='w-full max-w-[1200px] mx-auto flex-grow px-4 sm:px-6 md:px-10 py-10'>
+      <main className="w-full max-w-[1200px] mx-auto flex-grow px-4 sm:px-6 md:px-10 py-10">
         <div ref={topRef} />
-
-        <h2 className='text-2xl sm:text-3xl font-bold text-center mb-14'>
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-14">
           Products
         </h2>
 
-        <div className='flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4'>
-          <div className='w-3/4 mx-auto md:mx-0 sm:w-full md:w-1/2'>
-            <SearchBar
+        {/* 🔍 Search */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+          <div className="w-3/4 mx-auto md:mx-0 sm:w-full md:w-1/2">
+            {/* <SearchBar
               onSearch={query => {
-                setSearchQuery(query)
-                setCurrentPage(1)
+                setSearchQuery(query);
+                handlePageChange(1); // reset to page 1 on search
               }}
-            />
+            /> */}
+            {/* <SearchBar
+  onSearch={(query) => {
+    setSearchQuery(query);
+    setCurrentPage(0); // ✅ reset to first page when searching
+  }}
+/> */}
+
           </div>
         </div>
 
-        {/* <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16'>
-          {currentProducts.length > 0 ? (
-            currentProducts.map(product => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16">
+          {isLoading ? (
+            <p className="text-center col-span-full">Loading...</p>
+          ) : isError ? (
+            <p className="text-center text-red-500 col-span-full">
+              Error loading products
+            </p>
+          ) : filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
               <div
-                key={product.id}
-                className='flex flex-col items-center text-center cursor-pointer bg-white  rounded-lg p-4 transition-transform hover:scale-[1.02]'
-                onClick={() => navigate(`/viewproduct/${product.id}`)}
+                key={product._id}
+                className="flex flex-col items-center text-center cursor-pointer bg-white rounded-lg p-4 transition-transform hover:scale-[1.02]"
+                onClick={() => navigate(`/viewproduct/${product._id}`)}
               >
                 <img
-                  src={product.image.Image}
+                  src={product.image?.Image || "/placeholder.jpg"}
                   alt={product.name}
-                  className='w-full h-56 object-contain rounded-md mb-4'
+                  className="w-full h-56 object-contain rounded-md mb-4"
                 />
-                <h3 className='text-base sm:text-lg md:text-xl font-medium mb-2'>
-                  {product.name} ({product.color}, {product.type})
+                <h3 className="text-base sm:text-lg md:text-xl font-medium mb-2">
+                  {product.name}
                 </h3>
-                <p className='text-sm sm:text-base md:text-lg text-gray-600'>
-                  ₹{product.total}
-                </p>
-                <p className='text-sm sm:text-base md:text-lg text-green-600'>
-                  Discount {product.discount}% Off
+                <p className="text-sm sm:text-base md:text-lg">
+                  {product.description}
                 </p>
               </div>
             ))
           ) : (
-            <p className='text-lg col-span-full text-center'>
-              No products found for this filter
+            <p className="text-lg col-span-full text-center">
+              No products found
             </p>
           )}
-        </div> */}
-         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16'>
-         
-              <div
-               
-                className='flex flex-col items-center text-center cursor-pointer bg-white  rounded-lg p-4 transition-transform hover:scale-[1.02]'
-                onClick={() => navigate(`/viewproduct/`)}
-              >
-                <img
-                  src=""
-                  alt=""
-                  className='w-full h-56 object-contain rounded-md mb-4'
-                />
-                <h3 className='text-base sm:text-lg md:text-xl font-medium mb-2'>
-                  {/* {product.name} ({product.color}, {product.type}) */}
-                  T shirt (Red, Hoodie)
-                </h3>
-                <p className='text-sm sm:text-base md:text-lg text-gray-600'>
-                  {/* ₹{product.total} */}
-                  ₹ 500
-                </p>
-                <p className='text-sm sm:text-base md:text-lg text-green-600'>
-                  Discount {60}% Off
-                </p>
-              </div>
-          
         </div>
 
-        {totalPages > 1 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
+        {/* 🔢 Pagination */}
+        {meta.totalPages > 1 && (
+          <div className="flex justify-center gap-4">
+            {Array.from({ length: meta.totalPages }, (_, i) => (
+              <button
+                key={i}
+                className={`px-3 py-1 border rounded ${
+                  currentPage === i
+                    ? "bg-black text-white"
+                    : "bg-white border-gray-400"
+                }`}
+                onClick={() => handlePageChange(i )} 
+              >
+                {i + 1} 
+              </button>
+            ))}
+          </div>
         )}
       </main>
-
       <Footer />
     </div>
-  )
-}
+  );
+};

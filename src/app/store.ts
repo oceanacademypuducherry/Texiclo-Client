@@ -2,8 +2,10 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import { categoryReducer } from '../features/slice/categorySlice';
-import {  estimationReducer, productReducer, viewproductReducer } from '../redux';
+import {  estimationReducer, viewproductReducer } from '../redux';
 import { collectionReducer } from '../features/slice/collectionSlice';
+import { productReducer } from '../features/slice/productSlice';
+
 // import {
 //   categoryReducer,
 //   collectionReducer,
@@ -18,7 +20,7 @@ export const store = configureStore({
     category: categoryReducer,
     // categories: categoryReducer,
     collections: collectionReducer,
-    products: productReducer,
+    product: productReducer,
     viewproduct: viewproductReducer,
     estimation: estimationReducer,
   },

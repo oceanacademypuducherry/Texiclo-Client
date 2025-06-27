@@ -51,15 +51,18 @@ export const Product = () => {
         </button>
 
         <div className='overflow-hidden'>
-          <div
-            ref={scrollRef}
-            className='
-      flex gap-4 py-4
-      overflow-x-auto scroll-smooth 
-      scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100
-      lg:overflow-x-hidden lg:scrollbar-none justify-center
-    '
-          >
+    <div
+  ref={scrollRef}
+  className='
+    flex gap-4 py-4
+    overflow-x-auto scroll-smooth
+    scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100
+    lg:overflow-x-hidden lg:scrollbar-none
+    justify-start lg:justify-start
+  '
+>
+
+
             {categories?.map((category: CategoryData) => (
               <div
                 key={category._id}

@@ -44,7 +44,7 @@ export const ContactForm = ({ screenshot, onClose, requireScreenshot = false, pd
       if (pdfUrl) data.pdfUrl = pdfUrl;
 
 
-      const response = await fetch('http://localhost:3000/api/contact', {
+      const response = await fetch('http://localhost:3000/api/contact/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
