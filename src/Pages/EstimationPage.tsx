@@ -50,7 +50,7 @@ export const EstimationPage = () => {
       <div className="w-[95%] max-w-[1400px] mx-auto flex flex-col flex-grow">
         {/* Header */}
         <div className="relative px-6 sm:px-10 md:px-20 py-10 flex justify-between items-center">
-          <h1 className="text-2xl sm:text-3xl font-bold">Estimation Page</h1>
+          <h1 className="text-[20px] sm:text-3xl font-bold">Estimation Page</h1>
           {products.length > 0 && (
             <button
               onClick={() => dispatch(removeAllProducts())}
@@ -157,7 +157,7 @@ export const EstimationPage = () => {
       {showModal && (
   <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
     <div className="bg-white p-6 rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-lg relative">
-      <h2 className="text-xl font-bold mb-4">Contact Form</h2>
+      <h2 className="text-xl font- bold mb-4">Contact Form</h2>
       <ContactForm requireScreenshot  screenshot={screenshot || ''} onClose={() => setShowModal(false)} />
     </div>
   </div>

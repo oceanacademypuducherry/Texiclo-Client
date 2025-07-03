@@ -10,6 +10,7 @@ import {
 import { ViewProduct } from "../components/ViewProduct";
 import { Preview } from "../components/Preview";
 import Dispatcher from "../common/Dispatcher";
+import { ProductPages } from "../components";
 
 const MainLayout = () => (
   <>
@@ -30,7 +31,8 @@ export const router = createBrowserRouter([
       { path: "/estimation", element: <EstimationPage /> },
       { path: "/collection", element: <CollectionPage /> },
       { path: "/viewproduct/:productId", element: <ViewProduct /> },
-      { path: "/preview", element: <Preview /> },
+      { path: "/product", element: <ProductPages /> },
+      // { path: "/preview", element: <Preview /> },
     ],
   },
 ]);

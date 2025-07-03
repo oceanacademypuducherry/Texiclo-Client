@@ -1,8 +1,9 @@
-import { useRef } from 'react'
-import { useSelector } from 'react-redux'
+import { useRef,useEffect } from 'react'
+import { useSelector,useDispatch } from 'react-redux'
 import { RootState } from '../app/store'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { GetAllCategoryAPI } from "../features/api";
 
 interface CategoryData {
   _id: string
@@ -12,10 +13,21 @@ interface CategoryData {
 export const Product = () => {
   const scrollRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
+  const dispatch = useDispatch();
 
-  const { data: categories = [] } = useSelector(
+  // const { data: categories = [] } = useSelector(
+  //   (state: RootState) => state.category
+  // ) as { data: CategoryData[] }
+const { data: categories = [] } = useSelector(
     (state: RootState) => state.category
-  ) as { data: CategoryData[] }
+  );
+
+ useEffect(() => {
+  dispatch(GetAllCategoryAPI({ withMeta: false }) as any);
+}, []);
+
+
+
 
   const scroll = (direction: 'left' | 'right') => {
     const container = scrollRef.current
@@ -31,7 +43,7 @@ export const Product = () => {
 
   return (
     <section className='w-[85%] mx-auto px-4 sm:px-6 md:px-10 lg:px-20  pb-0 sm:pb-10'>
-      <div className='text-center mb-12'>
+      <div className='text-center sm:mb-12 mb-0'>
         <h2 className='text-[20px] md:text-3xl font-bold'>
           Choose Your Category
         </h2>
@@ -67,15 +79,18 @@ export const Product = () => {
               <div
                 key={category._id}
                 className='product-card flex-shrink-0 w-[250px] rounded-xl overflow-hidden text-center cursor-pointer  transition'
-                onClick={() =>
-                  navigate(`/products/?categoryId=${category._id}`)
-                }
+                onClick={() => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  navigate(`/products/?categoryId=${category._id}`);
+}}
+
               >
                 <img
-                  src={category.imageUrl}
-                  alt={category.name}
-                  className='w-full h-72 object-contain rounded-xl'
-                />
+  src={category.imageUrl}
+  alt={category.name}
+  className="w-full h-48 md:h-72 object-contain rounded-xl"
+/>
+
                 <p className='mt-3 font-medium text-[16px] md:text-[20px]'>
                   {category.name}
                 </p>

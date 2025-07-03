@@ -1,22 +1,28 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GetAllCategoryAPI } from "../api/categoryAPI";
 
-export interface CategoryState {
-  data: object | null;
+interface CategoryState {
+  data: any[];
+  meta: {
+    totalPages: number;
+    totalItems: number;
+    currentPage: number;
+    perPage: number;
+  };
   isError: boolean;
   isLoading: boolean;
   status: string | null;
   message: string | null;
 }
 
-export interface CandidatePayloadAction {
-  data: object;
-  message: string;
-  status: string;
-}
-
 const initialState: CategoryState = {
-  data: null,
+  data: [],
+  meta: {
+    totalPages: 1,
+    totalItems: 0,
+    currentPage: 1,
+    perPage: 4,
+  },
   isError: false,
   isLoading: false,
   status: null,
@@ -24,33 +30,27 @@ const initialState: CategoryState = {
 };
 
 const categorySlice = createSlice({
-  name: "/get-category",
+  name: "category",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(GetAllCategoryAPI.pending, (state) => {
         state.isLoading = true;
-        state.data = null;
-        state.message = null;
-        state.status = null;
+        state.isError = false;
       })
-      .addCase(
-        GetAllCategoryAPI.fulfilled,
-        (state, action: PayloadAction<any>) => {
-          const { success, category } = action.payload;
-          state.isLoading = false;
-          state.data = category;
-          state.message = null;
-          state.status = success ? "success" : "error";
-          state.isError = !success;
-        }
-      )
-
+      .addCase(GetAllCategoryAPI.fulfilled, (state, action: PayloadAction<any>) => {
+        const { success, category, meta } = action.payload;
+        state.isLoading = false;
+        state.data = category;
+        state.meta = meta;
+        state.status = success ? "success" : "error";
+        state.isError = !success;
+      })
       .addCase(GetAllCategoryAPI.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.error.message || "Failed to fetch category";
+        state.message = action.error.message || "Failed to fetch categories";
         state.status = "error";
       });
   },

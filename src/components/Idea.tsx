@@ -77,34 +77,33 @@ export const Idea = () => {
 
         {/* Right Content */}
         <div className="space-y-6 text-start sm:text-center md:text-left">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-custom-black">
-            You’ve Got The Ideas, We’ve Got The Tools
-          </h2>
-          <p className="text-custom-grey text-[16px] sm:text-[18px]">
-           Create your perfect custom T-shirt effortlessly with our easy-to-use design tools. Start designing today and bring your ideas to life.
-          </p>
-          <ul className="space-y-4 text-gray-800 text-[14px] sm:text-[18px] px-0">
-  {[
-    "Top quality prints using the latest technology",
-    "Mix and match colors, sizes, and designs",
-    "Fast and free standard shipping",
-    "Customer happiness guarantee",
-  ].map((text, idx) => (
-    <li
-      key={idx}
-      className="flex items-center gap-3"
-    >
-      <img
-        src={CHECKICON}
-        alt="check"
-        className="w-5 h-5 sm:w-8 sm:h-8 mt-[2px] sm:mt-0 flex-shrink-0"
-      />
-      <span className="leading-snug">{text}</span>
-    </li>
-  ))}
-</ul>
+  <h2 className="text-[20px] md:text-3xl font-extrabold text-custom-black">
+    You’ve Got The Ideas, We’ve Got The Tools
+  </h2>
 
-        </div>
+  <p className="text-[16px] md:text-[18px] text-custom-grey">
+    Create your perfect custom T-shirt effortlessly with our easy-to-use design tools. Start designing today and bring your ideas to life.
+  </p>
+
+  <ul className="space-y-4 text-gray-800 text-[16px] md:text-[18px] px-0">
+    {[
+      "Top quality prints using the latest technology",
+      "Mix and match colors, sizes, and designs",
+      "Fast and free standard shipping",
+      "Customer happiness guarantee",
+    ].map((text, idx) => (
+      <li key={idx} className="flex items-center gap-3">
+        <img
+          src={CHECKICON}
+          alt="check"
+          className="w-5 h-5 md:w-8 md:h-8 mt-[2px] md:mt-0 flex-shrink-0"
+        />
+        <span className="leading-snug">{text}</span>
+      </li>
+    ))}
+  </ul>
+</div>
+
       </div>
     </section>
   );

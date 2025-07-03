@@ -55,8 +55,24 @@ export const Navbar = () => {
       </nav>
 
       {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden flex flex-col space-y-2 px-4 pb-4 pt-4 relative">
+      <div
+        className={`fixed top-0 right-0 h-full w-2/3 bg-custom-yellow shadow-lg z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        {/* Close button */}
+        <div className="flex justify-end p-6">
+          <button
+            onClick={() => setIsOpen(false)}
+            aria-label="Close menu"
+            className="rounded-full p-2 bg-black text-white shadow-md  transition"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        {/* Mobile Links */}
+        <div className="flex flex-col space-y-4 px-6 pt-2">
           <Link
             to="/"
             className="text-lg font-semibold hover:text-blue-600 hover:bg-blue-100 rounded px-3 py-2 transition"
@@ -66,19 +82,20 @@ export const Navbar = () => {
           </Link>
 
           <div className="relative">
-            <Link
-              to="/estimation"
-              className="text-lg font-semibold hover:text-blue-600 hover:bg-blue-100 rounded px-3 py-2 transition"
-              onClick={() => setIsOpen(false)}
-            >
-              Estimation
-            </Link>
-            {productCount > 0 && (
-              <span className="absolute -top-1 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                {productCount}
-              </span>
-            )}
-          </div>
+  <Link
+    to="/estimation"
+    className="block w-full text-lg font-semibold hover:text-blue-600 hover:bg-blue-100 rounded px-3 py-2 transition"
+    onClick={() => setIsOpen(false)}
+  >
+    Estimation
+  </Link>
+  {productCount > 0 && (
+    <span className="absolute top-3 right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+      {productCount}
+    </span>
+  )}
+</div>
+
 
           <Link
             to="/#contactus"
@@ -88,7 +105,7 @@ export const Navbar = () => {
             ContactUs
           </Link>
         </div>
-      )}
+      </div>
     </header>
   );
 };

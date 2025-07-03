@@ -84,13 +84,13 @@ export const ProductGalleryDescription: React.FC = () => {
     dispatch(setProducts(mockProducts));
   }, []);
 
-  if (!specificProductData) {
-    return (
-      <div className="text-center py-20 text-xl text-gray-600">
-        Loading product details...
-      </div>
-    );
-  }
+  // if (!specificProductData) {
+  //   return (
+  //     <div className="text-center py-20 text-xl text-gray-600">
+  //       Loading product details...
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-20 flex flex-col lg:flex-row gap-8 mb-16">

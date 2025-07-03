@@ -1,88 +1,110 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setCategories } from "../redux/categorySlice";
 import { RootState } from "../app/store";
-import { categoryData } from "../constant/category";
 import { useNavigate } from "react-router-dom";
-import { Pagination } from "../common/Pagination";
-import { Footer, Navbar, SearchBar } from "../common";
+import { Footer, Navbar } from "../common";
+import { GetAllCategoryAPI } from "../features/api";
+import { FiSearch } from "react-icons/fi";
 
-interface CategoryData{
-  imageUrl: string,
-  name: string, 
-  _id: string
-}
+let debounceTimeout: NodeJS.Timeout;
 
 export const CategoryPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-const categories = useSelector((state: RootState) => state.category?.data ?? []) as CategoryData[];
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState("");
-  const itemsPerPage = 6;
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
 
-  useEffect(() => {
-    dispatch(setCategories(categoryData));
-  }, [dispatch]);
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [currentPage]);
-
-  const filteredCategories = categories.filter((category) =>
-    category.name.toLowerCase().includes(searchQuery)
+  const { data: categories = [], meta } = useSelector(
+    (state: RootState) => state.category
   );
 
-  const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentCategories = filteredCategories.slice(startIndex, startIndex + itemsPerPage);
+  // useEffect(() => {
+  //   dispatch(GetAllCategoryAPI({ page, search }) as any);
+  // }, [page, search]);
+
+  useEffect(() => {
+  dispatch(GetAllCategoryAPI({ page, search, withMeta: true }) as any);
+}, [page, search]);
+
+
+  useEffect(() => {
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => {
+      setPage(1);
+      setSearch(searchInput);
+    }, 400);
+  }, [searchInput]);
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="w-[90%] mx-auto flex-grow px-6 md:px-20 py-10">
-        <h2 className="text-3xl font-bold text-center mb-14">Categories</h2>
+      <main className="w-[90%] mx-auto flex-grow px-4 sm:px-6 md:px-20 py-10">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-10">
+          Categories
+        </h2>
 
-        <div className="flex flex-col-reverse md:flex-row justify-between items-center mb-12 gap-4">
-  <SearchBar onSearch={setSearchQuery} />
-  <p className="text-custom-grey text-xl text-center md:text-right">
-    Showing {filteredCategories.length === 0 ? 0 : startIndex + 1}–
-    {Math.min(startIndex + itemsPerPage, filteredCategories.length)} of {filteredCategories.length} results
-  </p>
-</div>
-
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-          {currentCategories.length > 0 ? (
-            currentCategories.map((category) => (
-              <div
-                key={category._id}
-                className="flex flex-col items-center text-xl cursor-pointer"
-                onClick={() => navigate(`/products/?categoryId=${category._id}`)}
-              >
-                <img
-                  src={category.imageUrl}
-                  alt={category.name}
-                  className="w-full h-auto rounded-md shadow-sm"
-                />
-                <h3 className="mt-2 text-md font-medium capitalize">{category.name}</h3>
-              </div>
-            ))
-          ) : (
-            <p className="text-center col-span-full text-lg text-gray-500">No categories found.</p>
-          )}
+        {/* 🔍 Search Bar */}
+        <div className="flex justify-start mb-6 sm:mb-8">
+          <div className="relative w-full max-w-md">
+            <span className="absolute left-3 top-2.5 text-gray-400 text-lg">
+              <FiSearch />
+            </span>
+            <input
+              type="text"
+              placeholder="Search"
+              className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm sm:text-base"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+          </div>
         </div>
 
-        {totalPages > 1 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-          />
+        {/* 🗂 Category Grid */}
+       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mb-10 justify-items-center">
+
+          {categories.map((category: any) => (
+            <div
+              key={category._id}
+              className="product-card w-full max-w-[250px] rounded-xl overflow-hidden text-center cursor-pointer transition"
+              onClick={() =>
+                navigate(`/products/?categoryId=${category._id}`)
+              }
+            >
+              <img
+                src={category.imageUrl}
+                alt={category.name}
+                className="w-full h-64 sm:h-72 object-contain rounded-xl"
+              />
+              <p className="mt-3 font-medium text-sm sm:text-base md:text-lg">
+                {category.name}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Pagination */}
+        {meta?.totalPages > 1 && (
+          <div className="flex flex-wrap justify-center items-center gap-3 mt-6">
+            {Array.from({ length: meta.totalPages }, (_, index) => {
+              const currentPage = index + 1;
+              const isActive = currentPage === page;
+
+              return (
+                <button
+                  key={currentPage}
+                  onClick={() => setPage(currentPage)}
+                  className={`w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center border rounded transition
+                    ${isActive
+                      ? "bg-black text-white"
+                      : "bg-white text-black border-gray-400 hover:bg-gray-100"}`}
+                >
+                  {currentPage}
+                </button>
+              );
+            })}
+          </div>
         )}
       </main>
       <Footer />

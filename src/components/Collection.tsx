@@ -22,9 +22,10 @@ export const Collection = () => {
           <div key={collection.id} className="collection-card">
             <div
               className="relative w-full h-[300px] bg-white rounded-xl overflow-hidden cursor-pointer"
-              onClick={() =>
-                navigate(`/products/?collectionId=${collection._id}`)
-              }
+              onClick={() =>{
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                navigate(`/products/?collectionId=${collection._id}`);
+              }}
             >
               {/* Image Centering */}
               <div className="w-full h-full flex items-center justify-center">
