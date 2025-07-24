@@ -1,33 +1,29 @@
-import {Collection, ContactUs,  Hero, Idea, ImageBannerSlider, Print, Product } from "../components";
-// import { useEffect } from "react";
-// import { useLocation } from "react-router-dom";
+import {
+  Collection,
+  ContactUs,
+  Hero,
+  Idea,
+  ImageBannerSlider,
+  Print,
+  Product,
+} from "../components";
+
 import { Footer, Navbar } from "../common";
 
-export  const HomePage = () => {
 
-  // const location = useLocation();
-
-  // useEffect(() => {
-  //   if (location.hash) {
-  //     const element = document.querySelector(location.hash);
-  //     if (element) {
-  //       element.scrollIntoView({ behavior: "smooth" });
-  //     }
-  //   }
-    
-  // }, [location]);
+export const HomePage = () => {
+   
   return (
     <div>
-     <Navbar/>
-     <ImageBannerSlider/>
+      <Navbar />
+      <ImageBannerSlider />
       <Hero />
       <Idea />
       <Print />
-      <Collection/>
+      <Collection />
       <Product />
       <ContactUs />
       <Footer />
     </div>
   );
 };
-

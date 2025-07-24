@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setCollections } from "../redux/collectionSlice";
-import { Collections } from "../constant/collection";
+// import { setCollections } from "../redux/collectionSlice";
+// import { Collections } from "../constant/collection";
 import { RootState } from "../app/store";
 import { useNavigate } from "react-router-dom";
 
@@ -18,9 +18,9 @@ export const CollectionPage = () => {
 
   console.log(collections, "collections");
 
-  useEffect(() => {
-    dispatch(setCollections(Collections));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(setCollections(Collections));
+  // }, [dispatch]);
 
   return (
     <section className="w-full max-w-[1400px] mx-auto px-4 py-20">

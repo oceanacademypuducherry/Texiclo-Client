@@ -32,6 +32,7 @@ export default {
       screens:{
         'max-lg': { max: '1100px' },
         'below-1000': { max: '1200px' }, 
+         'max-1300': {'max': '1300px'},
       }
     },
     

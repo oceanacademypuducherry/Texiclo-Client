@@ -1,45 +1,11 @@
-// // src/app/store.ts
 
-// import { configureStore } from '@reduxjs/toolkit';
-// import { categoryReducer } from '../features/slice/categorySlice';
-// import {  estimationReducer, viewproductReducer } from '../redux';
-// import { collectionReducer } from '../features/slice/collectionSlice';
-// import { productReducer } from '../features/slice/productSlice';
-
-// // import {
-// //   categoryReducer,
-// //   collectionReducer,
-// //   estimationReducer,
-// //   productReducer,
-// //   viewproductReducer,
-// // } from '../redux';
-
-
-// export const store = configureStore({
-//   reducer: {
-//     category: categoryReducer,
-//     // categories: categoryReducer,
-//     collections: collectionReducer,
-//     product: productReducer,
-//     viewproduct: viewproductReducer,
-//     estimation: estimationReducer,
-//   },
-
-// });
-
-
-// export type RootState = ReturnType<typeof store.getState>;
-// export type AppDispatch = typeof store.dispatch;
-
-
-// src/app/store.ts
 
 import { configureStore } from '@reduxjs/toolkit';
-import { categoryReducer } from '../features/slice/categorySlice';
-import { estimationReducer, viewproductReducer } from '../redux';
-import { collectionReducer } from '../features/slice/collectionSlice';
-import { productReducer } from '../features/slice/productSlice';
+import { estimationReducer } from '../features/slice/estimationSlice';
 import { loadState, saveState } from '../../src/utils/localstorage'; // ✅
+import { bannerReducer, categoryReducer, collectionReducer,productReducer,viewProductReducer } from '../features/slice';
+
+
 
 const persistedState = loadState(); // ✅ Load from localStorage
 
@@ -48,8 +14,10 @@ export const store = configureStore({
     category: categoryReducer,
     collections: collectionReducer,
     product: productReducer,
-    viewproduct: viewproductReducer,
+    viewProduct: viewProductReducer,
+    // viewproduct: viewproductReducer,
     estimation: estimationReducer,
+     banner: bannerReducer,
   },
   preloadedState: persistedState, // ✅ Inject persisted data
 });

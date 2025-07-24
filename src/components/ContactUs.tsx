@@ -16,14 +16,14 @@ export const ContactUs = () => {
   }, [location]);
 
   return (
-    <div id="contactus" className="w-[90%] mx-auto max-lg:px-0 px-0 md:px-20 py-10 md:text-[20px] text-[16px]">
+    <div id="contactus" className="w-[90%] mx-auto max-lg:px-0 px-0 md:px-20 py-6 sm:py-10 md:text-[20px] text-[16px]">
       <h2 className="md:text-[30px] text-[20px] font-bold text-center mb-4">Contact Us</h2>
 
-      <p className="text-center text-custom-grey mb-10 max-w-[700px] mx-auto">
+      <p className="text-center text-custom-grey mb-6 sm:mb-10 max-w-[700px] mx-auto">
         Reach out to us for inquiries, support, or feedback. Our team is here to support you every step of the way.
       </p>
 
-      <div className="flex flex-col md:flex-row gap-10 max-w-[1500px] mx-auto">
+      <div className="flex flex-col md:flex-row  gap-10  max-w-[1500px] mx-auto">
         <div className="flex-1 space-y-6">
           <div className="flex items-start gap-4">
             <FaMapMarkerAlt className="text-custom-green text-xl mt-1" />

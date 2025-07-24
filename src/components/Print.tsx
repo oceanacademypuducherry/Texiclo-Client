@@ -2,7 +2,7 @@ import { STEP1, STEP2, STEP3 } from "../assets";
 
 export const Print = () => {
   return (
-    <section className="py-12 px-4 sm:px-6 md:px-10 bg-[#FFFDF8] text-center ">
+    <section className="py-6 sm:py-12 px-2 sm:px-4 sm:px-6 md:px-10 bg-[#FFFDF8] text-center ">
       <h2 className="text-xl  md:text-3xl font-extrabold text-custom-black mb-4">
         T-shirt Printing Made Easy
       </h2>

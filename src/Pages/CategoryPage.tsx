@@ -15,19 +15,22 @@ export const CategoryPage = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
+  const [isLoading, setIsLoading] = useState(true); // Local loading state
 
   const { data: categories = [], meta } = useSelector(
     (state: RootState) => state.category
   );
 
-  // useEffect(() => {
-  //   dispatch(GetAllCategoryAPI({ page, search }) as any);
-  // }, [page, search]);
-
   useEffect(() => {
-  dispatch(GetAllCategoryAPI({ page, search, withMeta: true }) as any);
-}, [page, search]);
-
+    setIsLoading(true);
+    dispatch(
+      GetAllCategoryAPI({
+        page,
+        search,
+        withMeta: true,
+      }) as any
+    ).finally(() => setIsLoading(false));
+  }, [page, search]);
 
   useEffect(() => {
     clearTimeout(debounceTimeout);
@@ -61,31 +64,40 @@ export const CategoryPage = () => {
           </div>
         </div>
 
-        {/* 🗂 Category Grid */}
-       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mb-10 justify-items-center">
-
-          {categories.map((category: any) => (
-            <div
-              key={category._id}
-              className="product-card w-full max-w-[250px] rounded-xl overflow-hidden text-center cursor-pointer transition"
-              onClick={() =>
-                navigate(`/products/?categoryId=${category._id}`)
-              }
-            >
-              <img
-                src={category.imageUrl}
-                alt={category.name}
-                className="w-full h-64 sm:h-72 object-contain rounded-xl"
-              />
-              <p className="mt-3 font-medium text-sm sm:text-base md:text-lg">
-                {category.name}
-              </p>
-            </div>
-          ))}
+        {/* 🗂 Category Grid or Skeleton Loader */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mb-10 justify-items-center">
+          {isLoading
+            ? Array.from({ length: 4 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="w-full max-w-[250px] rounded-xl overflow-hidden text-center animate-pulse"
+                >
+                  <div className="w-full h-64 sm:h-72 bg-gray-200 rounded-xl mb-4"></div>
+                  <div className="h-5 bg-gray-200 rounded w-3/4 mx-auto"></div>
+                </div>
+              ))
+            : categories.map((category: any) => (
+                <div
+                  key={category._id}
+                  className="product-card w-full max-w-[250px] rounded-xl overflow-hidden text-center cursor-pointer transition"
+                  onClick={() =>
+                    navigate(`/products/?categoryId=${category._id}`)
+                  }
+                >
+                  <img
+                    src={category.imageUrl}
+                    alt={category.name}
+                    className="w-full h-64 sm:h-72 object-contain rounded-xl"
+                  />
+                  <p className="mt-3 font-medium text-sm sm:text-base md:text-lg">
+                    {category.name}
+                  </p>
+                </div>
+              ))}
         </div>
 
         {/* Pagination */}
-        {meta?.totalPages > 1 && (
+        {!isLoading && meta?.totalPages > 1 && (
           <div className="flex flex-wrap justify-center items-center gap-3 mt-6">
             {Array.from({ length: meta.totalPages }, (_, index) => {
               const currentPage = index + 1;

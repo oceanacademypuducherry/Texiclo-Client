@@ -10,5 +10,5 @@ export * from "./ProductGalleryDescription";
 export * from "./ContactForm";
 export * from "./Preview";
 export * from  "./ProductPages";
-
+export * from "./ImageCropUpload";
 

@@ -12,7 +12,7 @@ const Dispatcher: React.FC<DispatcherProps> = React.memo(({children} ) => {
  useEffect(() => {
     dispatch(GetAllCategoryAPI());
     dispatch(GetAllCollectionAPI());
-    
+    console.log("dispatcher page")
   }, [dispatch]);
 
  return <>{children}</>;
