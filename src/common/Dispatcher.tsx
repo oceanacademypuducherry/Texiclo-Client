@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, ReactNode } from "react";
+import React, { useEffect, ReactNode } from "react";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../redux";
 import { GetAllCategoryAPI,GetAllCollectionAPI } from "../features/api";
+import { AppDispatch } from "../app/store";
 
 interface DispatcherProps {
   children: ReactNode;

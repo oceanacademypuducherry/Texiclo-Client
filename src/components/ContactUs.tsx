@@ -1,4 +1,3 @@
-// src/components/ContactUs.tsx
 import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaClock } from 'react-icons/fa';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
