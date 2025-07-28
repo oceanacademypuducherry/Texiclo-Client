@@ -19,9 +19,8 @@ From idea to print, we simplify every step of the process.
             01
           </div>
           <h3 className="font-semibold text-lg sm:text-xl">Pick A Product</h3>
-          <p className="text-custom-grey sm:text-base md:text-[20px] max-w-xs">
-            Printed on 100% quality cotton for a vibrant finish and all-day comfort.
-          </p>
+          <p className="text-custom-grey sm:text-base md:text-[18px] max-w-xs">
+Select your ideal t-shirt from a variety of styles, colors, and sizes made from premium cotton.     </p>
         </div>
 
         {/* Step 2 */}
@@ -31,8 +30,9 @@ From idea to print, we simplify every step of the process.
             02
           </div>
           <h3 className="font-semibold text-lg sm:text-xl">Custom Artwork</h3>
-          <p className="text-custom-grey sm:text-base md:text-[20px] max-w-xs">
-            Printed on 100% quality cotton for a vibrant finish and all-day comfort.
+          <p className="text-custom-grey sm:text-base md:text-[18px] max-w-xs">
+Upload your design or create one online. We print your artwork with vibrant, long-lasting colors on high-quality fabric.
+
           </p>
         </div>
 
@@ -43,8 +43,8 @@ From idea to print, we simplify every step of the process.
             03
           </div>
           <h3 className="font-semibold text-lg sm:text-xl">Ship It For You</h3>
-          <p className="text-custom-grey sm:text-base md:text-[20px] max-w-xs">
-            Printed on 100% quality cotton for a vibrant finish and all-day comfort.
+          <p className="text-custom-grey sm:text-base md:text-[18px] max-w-xs">
+We carefully print, pack, and deliver your custom t-shirts straight to your doorstep!
           </p>
         </div>
       </div>

@@ -104,7 +104,8 @@ export const ProductGalleryDescription: React.FC = () => {
     const uniqueId = `${product?.name}-${gsm}-${color}-${size}-${type}`;
     const newProduct = {
       id: uniqueId,
-      img: selectedImage || mainImage,
+      // img: selectedImage || mainImage,
+      img:mainImage,
       name: product?.name,
       gsm,
       color,
@@ -122,6 +123,8 @@ export const ProductGalleryDescription: React.FC = () => {
   if (isLoading || !product) return <ProductSkeleton />;
 
   return (
+  
+    
     <div className="container mx-auto px-4 sm:px-6 lg:px-20 flex flex-col lg:flex-row gap-8 mb-16">
       {/* LEFT: Image Gallery */}
       <div className="flex gap-4 flex-col sm:flex-row sm:items-start">
@@ -147,7 +150,7 @@ export const ProductGalleryDescription: React.FC = () => {
           <img
             src={mainImage}
             alt={product?.title}
-            className="w-full h-full object-contain max-w-[100%] max-h-[100%]"
+            className="w-full h-full object-fit max-w-[100%] max-h-[100%] p-5"
           />
         </div>
       </div>
@@ -160,12 +163,12 @@ export const ProductGalleryDescription: React.FC = () => {
         </h2>
 
         {/* Description */}
-        <p className="mb-5 text-sm sm:text-base md:text-lg">
+        <p className="mb-6 text-sm sm:text-base md:text-lg">
           {product?.description}
         </p>
 
         {/* GSM */}
-        <div className="mb-5 flex items-center gap-2">
+        <div className="mb-6 flex items-center gap-2">
   <span className="whitespace-nowrap text-sm sm:text-base md:text-lg">
     <b>GSM:</b>
   </span>
@@ -188,7 +191,7 @@ export const ProductGalleryDescription: React.FC = () => {
 
 
         {/* Color Variants */}
-        <div className="flex items-center gap-2 mb-5">
+        <div className="flex items-center gap-2 mb-6">
           <span className="text-sm sm:text-base md:text-lg">
             <b>Color:</b>
           </span>
@@ -219,7 +222,7 @@ export const ProductGalleryDescription: React.FC = () => {
 
         {/* Sizes */}
         {Array.isArray(product?.sizesData) && (
-  <div className="mb-5 flex items-center gap-2">
+  <div className="mb-6 flex items-center gap-2">
     <p className="whitespace-nowrap text-sm sm:text-base md:text-lg">
       <b>Sizes:</b>
     </p>
@@ -244,7 +247,7 @@ export const ProductGalleryDescription: React.FC = () => {
 
         {/* Price */}
         {product?.prices?.length > 0 && (
-          <div className="text-sm lg:text-[18px] mt-3 mb-3 flex items-center gap-2">
+          <div className="text-sm lg:text-[18px] mt-6 mb-4 flex items-center gap-2">
             <span className="text-sm lg:text-[18px]">
               <b>Price:</b>
             </span>
@@ -266,16 +269,29 @@ export const ProductGalleryDescription: React.FC = () => {
 
         {/* Action Buttons */}
         <div className="flex gap-4 mt-10">
-          <label className="px-4 py-2 border rounded cursor-pointer text-center sm:text-left text-sm lg:text-[18px]">
-            Upload & Preview
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImageUpload}
-              className="hidden"
-            />
-          </label>
+   <label className="group relative px-6 py-3 border rounded cursor-pointer text-center sm:text-left text-sm lg:text-[18px] transition-transform duration-300 overflow-hidden w-max bg-white transform hover:scale-110 hover:shadow-lg">
+  {/* Default Text */}
+  <span className="transition-opacity duration-300 group-hover:opacity-0 group-hover:scale-95">
+    Upload & Preview
+  </span>
+
+  {/* Hover Text */}
+  <span className="absolute inset-0 flex items-center justify-center  text-sm sm:text-base text-gray-900 opacity-0 group-hover:opacity-100 group-hover:scale-175 transition-all duration-300 text-center px-2 p-3">
+    Upload Your Logo & Preview on T-shirt
+  </span>
+
+  <input
+    type="file"
+    accept="image/png"
+    multiple
+    onChange={handleImageUpload}
+    className="hidden"
+  />
+</label>
+
+
+
+
           <button
             className="px-6 py-2 bg-custom-yellow text-black rounded font-semibold text-sm lg:text-[18px]"
             onClick={handleAddToEstimation}
@@ -303,11 +319,11 @@ export const ProductGalleryDescription: React.FC = () => {
         </div>
       )}
     </div>
+    
   );
 };
 
 
-// import React, { useEffect, useState } from "react";
 // import { useNavigate, useParams } from "react-router-dom";
 // import { useDispatch, useSelector } from "react-redux";
 // import { addProduct } from "../features/slice/estimationSlice";

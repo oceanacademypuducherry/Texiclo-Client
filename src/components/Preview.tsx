@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
-import { SPORTSWEAR } from "../assets";
+import { CROPTOP, SPORTSWEAR } from "../assets";
 import { ContactForm } from "./ContactForm";
 import { ImageCropUpload } from "./ImageCropUpload"; // Import Crop component
 
@@ -178,7 +178,7 @@ export const Preview: React.FC<PreviewProps> = ({ images, onClose }) => {
       <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center">Preview</h2>
       <div className="flex flex-col md:flex-row gap-20 w-full max-w-5xl mx-auto items-center justify-center">
         <div ref={previewRef} className="relative w-[220px] h-[280px] sm:w-[300px] sm:h-[350px]">
-          <img src={SPORTSWEAR} alt="shirt" className="w-full h-full object-contain rounded shadow border" />
+          <img src={CROPTOP} alt="shirt" className="w-full h-full object-contain rounded shadow border" />
           {currentPosition && selectedImages[currentPosition] && (
             <img
               src={selectedImages[currentPosition]}
@@ -235,18 +235,23 @@ export const Preview: React.FC<PreviewProps> = ({ images, onClose }) => {
           ))}
 
           <div className="flex flex-col sm:flex-row gap-4 mt-4">
-            <button
-              onClick={() => handleSavePDF(true)}
-              className="bg-yellow-400 px-4 py-2 rounded font-semibold text-sm sm:text-base shadow"
-            >
-              Save as PDF
-            </button>
+           <button
+  onClick={async () => {
+    await handleSavePDF(true);
+    onClose(); // Closes the Preview modal
+  }}
+  className="bg-yellow-400 px-4 py-2 rounded font-semibold text-sm sm:text-base shadow"
+>
+  Save as PDF
+</button>
+
             <button
               onClick={openContactForm}
               className="bg-yellow-400 px-4 py-2 rounded font-semibold text-sm sm:text-base shadow"
             >
               Contact for purchasing
             </button>
+            
           </div>
 
           {showContactModal && pdfBlob && (
@@ -256,6 +261,7 @@ export const Preview: React.FC<PreviewProps> = ({ images, onClose }) => {
                   onClose={closeContactForm}
                   requireScreenshot={false}
                   pdfBlob={pdfBlob}
+                  onSubmitted={onClose}
                 />
               </div>
             </div>

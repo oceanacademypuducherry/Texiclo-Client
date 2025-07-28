@@ -11,7 +11,7 @@ export const Navbar = () => {
   const productCount = products.length;
 
   return (
-    <header className="w-full bg-custom-yellow text-custom-black p-4 md:p-6">
+    <header className="w-full bg-custom-yellow text-custom-black p-4 md:p-6 sticky top-0 z-50">
       <nav className="flex justify-between items-center px-4 md:px-10">
         <img src={TEXICLO} alt="Texiclo Logo" className="w-24" />
 
@@ -42,7 +42,7 @@ export const Navbar = () => {
             to="/#contactus"
             className="text-xl font-semibold hover:text-blue-600 transition"
           >
-            ContactUs
+            Contact Us
           </Link>
         </div>
 
@@ -65,7 +65,7 @@ export const Navbar = () => {
           <button
             onClick={() => setIsOpen(false)}
             aria-label="Close menu"
-            className="rounded-full p-2 bg-black text-white shadow-md  transition"
+            className="rounded-full p-2 bg-black text-white shadow-md transition"
           >
             <X size={18} />
           </button>
@@ -82,20 +82,19 @@ export const Navbar = () => {
           </Link>
 
           <div className="relative">
-  <Link
-    to="/estimation"
-    className="block w-full text-lg font-semibold hover:text-blue-600 hover:bg-blue-100 rounded px-3 py-2 transition"
-    onClick={() => setIsOpen(false)}
-  >
-    Estimation
-  </Link>
-  {productCount > 0 && (
-    <span className="absolute top-3 right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-      {productCount}
-    </span>
-  )}
-</div>
-
+            <Link
+              to="/estimation"
+              className="block w-full text-lg font-semibold hover:text-blue-600 hover:bg-blue-100 rounded px-3 py-2 transition"
+              onClick={() => setIsOpen(false)}
+            >
+              Estimation
+            </Link>
+            {productCount > 0 && (
+              <span className="absolute top-3 right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                {productCount}
+              </span>
+            )}
+          </div>
 
           <Link
             to="/#contactus"
@@ -109,3 +108,4 @@ export const Navbar = () => {
     </header>
   );
 };
+

@@ -17,6 +17,7 @@ export default {
   },
       fontFamily: {
         sans: ["Poppins", "sans-serif"],
+        //  sans: ['Nunito Sans', "sans-serif"],
       },
       colors: {
         'custom-yellow': '#FFEEA5',

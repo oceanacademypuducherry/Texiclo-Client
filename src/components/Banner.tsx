@@ -118,7 +118,7 @@ export const ImageBannerSlider = () => {
               setIsAnimating(true);
               prevSlide();
             }}
-            className="hidden md:flex absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 shadow-md z-10 rounded-full"
+            className="hidden md:flex absolute left-7 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 shadow-md z-10 rounded-full"
           >
             <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
           </button>
@@ -127,7 +127,7 @@ export const ImageBannerSlider = () => {
               setIsAnimating(true);
               nextSlide();
             }}
-            className="hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 shadow-md z-10 rounded-full"
+            className="hidden md:flex absolute right-7 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 shadow-md z-10 rounded-full"
           >
             <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
           </button>

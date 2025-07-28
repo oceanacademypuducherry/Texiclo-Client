@@ -47,10 +47,24 @@ export const ProductPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
+          {/* 🔙 Back Button */}
+      <div className="relative flex items-center justify-center mt-5 mb-0 sm:mb-14 h-14">
+  {/* Back Button at Left Corner */}
+  <button
+    onClick={() => navigate("/")}
+    className="absolute left-10 bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition text-sm sm:text-base"
+  >
+     Back
+  </button>
+
+  {/* Centered Heading */}
+  <h2 className="text-2xl sm:text-3xl font-bold text-center">
+    Products
+  </h2>
+</div>
       <main className="w-full max-w-[1200px] mx-auto flex-grow px-4 sm:px-6 md:px-10 py-10">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-14">
-          Products
-        </h2>
+        
+    
 
         {/* 🔍 Search */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
@@ -62,7 +76,7 @@ export const ProductPage = () => {
                 </span>
                 <input
                   type="text"
-                  placeholder="Search"
+                  placeholder="Search by product name"
                   className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm sm:text-base"
                   value={searchQuery}
                   onChange={(e) => {
@@ -78,7 +92,6 @@ export const ProductPage = () => {
         {/* 🧱 Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16">
           {isLoading ? (
-            // 🟡 Skeleton loading placeholders
             Array.from({ length: 4 }).map((_, index) => (
               <div
                 key={index}
@@ -98,14 +111,14 @@ export const ProductPage = () => {
               </div>
             ))
           ) : products.length > 0 ? (
-            // ✅ Actual product cards
             products.map((product) => (
               <div
-  key={product._id}
-  className="flex flex-col items-start text-left cursor-pointer bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
-  onClick={() => window.open(`/viewproduct/${product._id}`, "_blank")}
->
-
+                key={product._id}
+                className="flex flex-col items-start text-left cursor-pointer bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+                onClick={() =>
+                  (window.location.href = `/viewproduct/${product._id}`)
+                }
+              >
                 <img
                   src={product.variantInfo?.[0]?.variantImage}
                   alt={product.name}
@@ -160,7 +173,6 @@ export const ProductPage = () => {
               </div>
             ))
           ) : (
-            // ❌ Show only if loading is done & no products
             <p className="text-lg col-span-full text-center">
               No products found
             </p>

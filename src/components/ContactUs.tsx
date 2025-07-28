@@ -25,27 +25,43 @@ export const ContactUs = () => {
       <div className="flex flex-col md:flex-row  gap-10  max-w-[1500px] mx-auto">
         <div className="flex-1 space-y-6">
           <div className="flex items-start gap-4">
-            <FaMapMarkerAlt className="text-custom-green text-xl mt-1" />
-            <div>
-              <h4 className="font-semibold">Address</h4>
-              <p>{CONTACT_INFO.address}</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <FaPhoneAlt className="text-custom-green text-xl mt-1" />
-            <div>
-              <h4 className="font-semibold">Mobile</h4>
-              <p>{CONTACT_INFO.phones[0]}</p>
-              <p>{CONTACT_INFO.phones[1]}</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <FaEnvelope className="text-custom-green text-xl mt-1" />
-            <div>
-              <h4 className="font-semibold">Email</h4>
-              <p>{CONTACT_INFO.email}</p>
-            </div>
-          </div>
+  <FaMapMarkerAlt className="text-custom-green text-xl mt-1" />
+  <div>
+    <h4 className="font-semibold">Address</h4>
+      {CONTACT_INFO.address}
+    </div>
+</div>
+
+<div className="flex items-start gap-4">
+  <FaPhoneAlt className="text-custom-green text-xl mt-1" />
+  <div>
+    <h4 className="font-semibold">Mobile</h4>
+    <a href={`tel:${CONTACT_INFO.phones[0]}`} className="block">
+      {CONTACT_INFO.phones[0]}
+    </a>
+    <a href={`tel:${CONTACT_INFO.phones[1]}`} className="block">
+      {CONTACT_INFO.phones[1]}
+    </a>
+  </div>
+</div>
+
+<div className="flex items-start gap-4">
+  <FaEnvelope className="text-custom-green text-xl mt-1" />
+  <div>
+    <h4 className="font-semibold">Email</h4>
+   <a
+      href={`https://mail.google.com/mail/?view=cm&fs=1&to=${CONTACT_INFO.email}`}
+      target="_blank"
+      rel="noopener noreferrer"
+     
+    >
+  {CONTACT_INFO.email}
+</a>
+
+  </div>
+</div>
+
+
           <div className="flex items-start gap-4">
             <FaClock className="text-custom-green text-xl mt-1" />
             <div>
@@ -57,7 +73,13 @@ export const ContactUs = () => {
 
         <div className="flex-1">
           <h3 className="md:text-xl text-base font-semibold mb-6">Send a Message</h3>
-          <ContactForm />
+          <ContactForm
+  pdfBlob={new Blob()} // or actual blob if you have one
+  onSubmitted={() => {
+    console.log("✅ Contact form submitted.");
+  }}
+/>
+
         </div>
       </div>
     </div>

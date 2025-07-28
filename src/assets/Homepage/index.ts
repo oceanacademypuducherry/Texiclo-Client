@@ -21,19 +21,20 @@ import STEP2 from "./step2.svg";
 import STEP3 from "./step3.svg";
 import TSHIRT from "./tshirt.svg";
 import CONTACT from "./contact.png";
-import CROPTOP from "./croptop.svg";
+import CROPTOP from "./croptop.png";
 
 import FRONTIMG from "./frontimg.svg";
 import BACKIMG from "./backimg.svg";
 import SLEEVEIMG from "./sleeveimg.svg";
 import PRODUCT from "./product.svg";
 import SPORTSWEAR from "./sportswear.png";
+import EMPTY from"./empty.png";
 
 
 
 
 export {
-    TEXICLO,LOGO,LOGO1,LOGO2,HEROIMAGE,IDEAIMAGE,QUALITYICON,MATCHICON,SHIPPINGICON,CHECKICON,SPORTSWEAR,
+    TEXICLO,LOGO,LOGO1,LOGO2,HEROIMAGE,IDEAIMAGE,QUALITYICON,MATCHICON,EMPTY,SHIPPINGICON,CHECKICON,SPORTSWEAR,
     NEWCOLLECTION,WOMENS,MENS,KIDS,POLO,HOODIE,SWEATSHIRTS,TSHIRT,STEP1,STEP2,STEP3,CONTACT,CROPTOP,FRONTIMG,BACKIMG,SLEEVEIMG,PRODUCT
 }
 

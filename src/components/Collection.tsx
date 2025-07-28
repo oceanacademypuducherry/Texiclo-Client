@@ -27,9 +27,9 @@ export const Collection = () => {
             ))
           : displayedCollections.map((collection) => (
               <div
-                key={collection.id}
-                className="relative w-[280px] h-[300px] bg-white rounded-xl overflow-hidden cursor-pointer shadow"
-                onClick={() => {
+  key={collection.id}
+  className="relative w-[280px] h-[300px] bg-white rounded-xl overflow-hidden cursor-pointer shadow hover:shadow-lg hover:scale-[1.06] transition-all duration-300"
+ onClick={() => {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                   navigate(`/products/?collectionId=${collection._id}`);
                 }}
@@ -38,7 +38,7 @@ export const Collection = () => {
                   <img
                     src={collection.imageUrl}
                     alt={collection.name}
-                    className="max-w-full h-[300px] object-contain"
+                    className="max-w-full h-[300px]"
                   />
                 </div>
 

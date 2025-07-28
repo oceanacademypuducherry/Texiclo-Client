@@ -24,6 +24,17 @@ export const Product = () => {
     dispatch(GetAllCategoryAPI({ withMeta: false }) as any);
   }, [dispatch]);
 
+  useEffect(() => {
+    // Scroll to category section if URL hash matches
+    const hash = window.location.hash;
+    if (hash === '#category-section') {
+      const element = document.getElementById('category-section');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, []);
+
   const scroll = (direction: 'left' | 'right') => {
     const container = scrollRef.current;
     if (container) {
@@ -39,7 +50,7 @@ export const Product = () => {
   const isDataReady = !isLoading && Array.isArray(categories) && categories.length > 0;
 
   return (
-    <section className='w-[95%] sm:w-[85%] mx-auto px-4 sm:px-6 md:px-10 lg:px-20 pb-0 sm:pb-10'>
+    <section  id="category-section" className='w-[95%] sm:w-[85%] mx-auto px-4 sm:px-6 md:px-10 lg:px-20 pb-0 sm:pb-10'>
       <div className='text-center sm:mb-12 mb-0'>
         <h2 className='text-[20px] md:text-3xl font-bold'>
           Choose Your Category

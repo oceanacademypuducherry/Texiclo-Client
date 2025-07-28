@@ -1,8 +1,7 @@
 import { TEXICLO } from "../assets";
-import { SiLinktree } from "react-icons/si";
-import { FaTelegramPlane } from "react-icons/fa";
-// import { FaYoutube } from "react-icons/fa";
-// import { FaSquareInstagram } from "react-icons/fa6";
+import { FaFacebookSquare, FaLinkedin, FaTelegramPlane } from "react-icons/fa";
+
+import { FaSquareInstagram } from "react-icons/fa6";
 import { CONTACT_INFO } from "../constant";
 import { Link } from "react-router-dom";
 
@@ -29,23 +28,41 @@ export const Footer = () => {
 </a>
 
 <a
-  href="https://linktr.ee/Texiclo"
+  href="https://www.facebook.com/people/Texiclo-page/61565989897279/?mibextid=kFxxJD"
   target="_blank"
   rel="noopener noreferrer"
   className="hover:text-red-500 transition-colors"
 >
-  <SiLinktree />
+  <FaFacebookSquare />
+
 </a>
 
-            {/* <a href="#" className="hover:text-white transition-colors"><FaYoutube /></a>
-            <a href="#" className="hover:text-white transition-colors"><FaSquareInstagram /></a> */}
+            <a href="https://www.linkedin.com/in/texiclo-company-texiclo-823152337/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"
+  rel="noopener noreferrer"
+  className="hover:text-red-500 transition-colors"><FaLinkedin />
+</a>
+            <a href="https://www.instagram.com/texiclo/?igsh=MTVlanJsbjd3cnM1cg%3D%3D#" target="_blank"
+  rel="noopener noreferrer"
+  className="hover:text-red-500 transition-colors"><FaSquareInstagram /></a>
           </div>
         </div>
 
         <div className="flex flex-col items-center text-center">
           <h3 className="font-bold mb-4 text-lg md:text-xl">Get In Touch</h3>
-          <p className="mb-2">{CONTACT_INFO.email}</p>
-          <p className="font-bold mb-2">{CONTACT_INFO.phones[0]}</p>
+          <p className="mb-2"><a
+                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${CONTACT_INFO.email}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                
+              >
+            {CONTACT_INFO.email}
+          </a></p>
+          <p className="font-bold mb-2"><a href={`tel:${CONTACT_INFO.phones[0]}`} className="block">
+      {CONTACT_INFO.phones[0]}
+    </a>
+    <a href={`tel:${CONTACT_INFO.phones[1]}`} className="block">
+      {CONTACT_INFO.phones[1]}
+    </a></p>
           <p>
             {CONTACT_INFO.address}
            
@@ -56,18 +73,32 @@ export const Footer = () => {
           <h3 className="font-bold mb-4 text-lg md:text-xl">Information</h3>
           
 
+{/* <ul className="space-y-2">
+  <li>
+    <Link to="/about" target="_blank" className="hover:text-red-600 transition-colors">About Us</Link>
+  </li>
+  <li>
+    <Link to="/policies" target="_blank" className="hover:text-red-600 transition-colors">Policies</Link>
+  </li>
+  <li>
+    <Link to="/contactus" target="_blank" className="hover:text-red-600 transition-colors">Contact Us</Link>
+  </li>
+  <li>
+    <Link to="/privacy" target="_blank" className="hover:text-red-600 transition-colors">Privacy Policies</Link>
+  </li>
+</ul> */}
 <ul className="space-y-2">
   <li>
-    <Link to="/about" className="hover:text-red-600 transition-colors">About Us</Link>
+    About Us
   </li>
   <li>
-    <Link to="/policies" className="hover:text-red-600 transition-colors">Policies</Link>
+    Policies
   </li>
   <li>
-    <Link to="/contactus" className="hover:text-red-600 transition-colors">Contact Us</Link>
+    Contact Us
   </li>
   <li>
-    <Link to="/privacy" className="hover:text-red-600 transition-colors">Privacy Policies</Link>
+    Privacy Policies
   </li>
 </ul>
 

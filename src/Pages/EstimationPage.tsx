@@ -12,6 +12,7 @@ import { Navbar, Footer } from "../common";
 import html2canvas from "html2canvas";
 import { useNavigate } from "react-router-dom";
 import { ContactForm } from "../components";
+import { EMPTY } from "../assets";
 
 export const EstimationPage = () => {
   const dispatch = useDispatch();
@@ -21,14 +22,31 @@ export const EstimationPage = () => {
   const [screenshot, setScreenshot] = useState<string | null>(null);
 
   // ✅ Total price calculation
-  const total = products.reduce((acc, curr) => acc + curr.quantity * curr.price, 0);
+  const total = products.reduce(
+    (acc, curr) => acc + curr.quantity * curr.price,
+    0
+  );
 
   const handleContactClick = async () => {
     const element = document.getElementById("estimation-section");
     if (!element) return;
 
     try {
-      const canvas = await html2canvas(element, { scale: 2 });
+      // Wait for fonts and images to load
+      await document.fonts.ready;
+
+      // Small delay to allow layout/render completion
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true, // ✅ required for cross-origin images
+        scrollX: 0,
+        scrollY: -window.scrollY, // prevent scroll offset
+        windowWidth: document.documentElement.scrollWidth,
+        windowHeight: document.documentElement.scrollHeight,
+      });
+
       const image = canvas.toDataURL("image/png");
       setScreenshot(image);
       setShowModal(true);
@@ -37,32 +55,54 @@ export const EstimationPage = () => {
     }
   };
 
+  
+
+  const handleViewProducts = () => {
+    navigate('/category#category-section');
+  };
+
   return (
-    <div className="min-h-screen flex flex-col bg-white" id="estimation-section">
+    <div
+      className="min-h-screen flex flex-col bg-white"
+      id="estimation-section"
+    >
       <Navbar />
 
       <div className="flex-grow w-[95%] max-w-[1400px] mx-auto">
         {/* Header */}
         {/* Header (only if products exist) */}
-{products.length > 0 && (
-  <div className="relative px-6 sm:px-10 md:px-20 py-10 flex justify-between items-center">
-    <h1 className="text-[20px] sm:text-3xl font-bold">Estimation Page</h1>
-    <button
-      onClick={() => dispatch(removeAllProducts())}
-      className="text-sm sm:text-base bg-custom-yellow px-4 py-2 rounded font-medium"
-    >
-      Remove all
-    </button>
-  </div>
-)}
-
+        {products.length > 0 && (
+          <div className="relative px-6 sm:px-10 md:px-20 py-10 flex justify-between items-center">
+            <h1 className="text-[20px] sm:text-3xl font-bold">
+              Estimation Page
+            </h1>
+            <button
+              onClick={() => dispatch(removeAllProducts())}
+              className="text-sm sm:text-base bg-custom-yellow px-4 py-2 rounded font-medium"
+            >
+              Remove all
+            </button>
+          </div>
+        )}
 
         {/* Conditional Rendering */}
         {products.length === 0 ? (
-          <div className="flex-1 flex justify-center items-center">
-  <p className="text-center text-lg text-gray-600 mt-60">No products in estimation</p>
-</div>
-
+          <div className="flex-1 flex flex-col justify-center items-center py-20">
+            <img
+              src={EMPTY} // <-- replace with your image path
+              alt="No products"
+              className="w-64 h-64 object-contain mb-0"
+            />
+            <p className="text-center text-lg mb-4">
+              To add products in estimation
+            </p>
+            <button
+        onClick={handleViewProducts}
+        className="bg-custom-yellow text-black font-semibold px-6 py-2 transition"
+      >
+        View Products
+      </button>
+          </div>
         ) : (
           <>
             {/* Product Grid */}
@@ -77,6 +117,7 @@ export const EstimationPage = () => {
                     <img
                       src={product.img}
                       alt={product.name}
+                      
                       className="w-40 h-48 object-contain"
                     />
                     <div className="flex items-center gap-2">
@@ -86,7 +127,9 @@ export const EstimationPage = () => {
                       >
                         -
                       </button>
-                      <span className="w-6 text-center">{product.quantity}</span>
+                      <span className="w-6 text-center">
+                        {product.quantity}
+                      </span>
                       <button
                         className="bg-gray-300 px-2 rounded"
                         onClick={() => dispatch(incrementQuantity(product.id))}
@@ -142,11 +185,24 @@ export const EstimationPage = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-lg relative">
             <h2 className="text-xl font-bold mb-4">Contact Form</h2>
-            <ContactForm
+            {/* <ContactForm
+              pdfBlob={new Blob()}
+              onSubmitted={() => console.log("✅ Contact form submitted.")}
               requireScreenshot
               screenshot={screenshot || ""}
               onClose={() => setShowModal(false)}
-            />
+            /> */}
+            <ContactForm
+  screenshot={screenshot || ""} // 👈 pass base64 string here
+  requireScreenshot
+  pdfBlob={new Blob()} // or remove if unused
+  onClose={() => setShowModal(false)}
+  onSubmitted={() => {
+    console.log("📩 Form submitted");
+    setShowModal(false); // close after submit
+  }}
+/>
+
           </div>
         </div>
       )}
