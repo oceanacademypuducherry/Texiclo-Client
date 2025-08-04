@@ -14,7 +14,7 @@ interface Product {
   discount: number;
   description: string;
   originalPrice: number;
-  quantity: number; // ✅ Add this
+  quantity: number; 
 }
 
 interface EstimationState {

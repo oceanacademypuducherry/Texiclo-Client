@@ -4,6 +4,8 @@ import * as yup from 'yup';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify'; // ✅ Import toast
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import { userAPI } from '../services';
 
 type ContactFormProps = {
   screenshot?: string;
@@ -56,49 +58,63 @@ useEffect(() => {
 }, [requireScreenshot, screenshot]);
 
 
+
 const onSubmit = async (data: any) => {
   try {
     setSubmitting(true);
 
-    if (image && requireScreenshot) {                                                                                         
-      data.screenshot = image;
-    }
-    if (pdfUrl) {
-      data.pdfUrl = pdfUrl;
+    const formData = new FormData();
+
+    // Append regular fields
+    formData.append('name', data.name);
+    formData.append('type', data.type);
+    formData.append('mobile', data.mobile);
+    formData.append('subject', data.subject);
+    formData.append('message', data.message);
+
+    // Append screenshot if required
+    if (image && requireScreenshot) {
+      // Convert base64 to Blob
+      const res = await fetch(image);
+      const blob = await res.blob();
+      formData.append('screenshot', blob, 'screenshot.png');
     }
 
-    const response = await fetch('http://localhost:3000/api/contact/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+    // Append PDF if available
+    if (pdfUrl) {
+      const res = await fetch(pdfUrl);
+      const blob = await res.blob();
+      formData.append('pdf', blob, 'attachment.pdf');
+    }
+
+    // Send POST request with FormData
+    const response = await userAPI.post('contact', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     });
 
-    // 🛠 FIX: read text first
-    const responseText = await response.text();
-
-    let result;
-    try {
-      result = JSON.parse(responseText);
-    } catch (err) {
-      result = {};
-    }
-
-    if (response.ok) {
-      toast.success('Form submitted successfully!', { autoClose: 3000 });
-      reset();
-      setImage(null);
-      onClose?.();
-      onSubmitted();
-    } else {
-      toast.error(result?.message || 'Submission failed', { autoClose: 3000 });
-    }
+    // ✅ Success
+    toast.success('Form submitted successfully!', { autoClose: 3000 });
+    reset();
+    setImage(null);
+    onClose?.();
+    onSubmitted();
   } catch (error) {
-    console.error('❌ Network or fetch error:', error);
-    toast.error('An error occurred during submission.', { autoClose: 3000 });
+    // ❌ Handle errors
+    if (axios.isAxiosError(error)) {
+      toast.error(error.response?.data?.message || 'Submission failed', { autoClose: 3000 });
+      console.error('❌ Axios error:', error.response?.data || error.message);
+    } else {
+      toast.error('An error occurred during submission.', { autoClose: 3000 });
+      console.error('❌ Unknown error:', error);
+    }
   } finally {
     setSubmitting(false);
   }
 };
+
+
 
 
 

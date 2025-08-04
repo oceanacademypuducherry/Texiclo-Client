@@ -1,13 +1,14 @@
 // bannerAPI.ts
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+
+import { userAPI } from "../../services";
 
 // Define async thunk
 export const GetAllBannerAPI = createAsyncThunk(
   "banner/getAll",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get("http://localhost:3000/api/banner/get");
+      const response = await userAPI.get("banner/get");
       return response.data.data; 
     } catch (error: any) {
       return thunkAPI.rejectWithValue(

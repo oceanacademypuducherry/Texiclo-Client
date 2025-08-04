@@ -40,7 +40,7 @@ export const EstimationPage = () => {
 
       const canvas = await html2canvas(element, {
         scale: 2,
-        useCORS: true, // ✅ required for cross-origin images
+        // useCORS: true, // ✅ required for cross-origin images
         scrollX: 0,
         scrollY: -window.scrollY, // prevent scroll offset
         windowWidth: document.documentElement.scrollWidth,
@@ -117,7 +117,7 @@ export const EstimationPage = () => {
                     <img
                       src={product.img}
                       alt={product.name}
-                      
+                    
                       className="w-40 h-48 object-contain"
                     />
                     <div className="flex items-center gap-2">
@@ -195,11 +195,13 @@ export const EstimationPage = () => {
             <ContactForm
   screenshot={screenshot || ""} // 👈 pass base64 string here
   requireScreenshot
-  pdfBlob={new Blob()} // or remove if unused
+
+  
+  pdfBlob={new Blob()} 
   onClose={() => setShowModal(false)}
   onSubmitted={() => {
     console.log("📩 Form submitted");
-    setShowModal(false); // close after submit
+    setShowModal(false); 
   }}
 />
 

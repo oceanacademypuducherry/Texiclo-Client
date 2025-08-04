@@ -11,7 +11,7 @@ export const GetAllProductAPI = createAsyncThunk(
       const { page, categoryId, collectionId, search = "" } = params;
 
       const response = await userAPI.post(
-        `http://localhost:3000/api/product/get/${page}`, 
+        `product/get/${page}`, 
         { categoryId, collectionId, search },  // ✅ include search
         {
           headers: { "Content-Type": "application/json" },

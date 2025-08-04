@@ -8,7 +8,7 @@ export const GetAllCollectionAPI = createAsyncThunk(
     try {
       
       const response = await userAPI.get(
-        `http://localhost:3000/api/collection/get`,
+        `collection/get`,
         {
           headers: {
             "Content-Type": "application/json",
