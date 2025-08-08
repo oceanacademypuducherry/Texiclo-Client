@@ -256,7 +256,7 @@ export const Preview: React.FC<PreviewProps> = ({ images, onClose }) => {
 
           {showContactModal && pdfBlob && (
             <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black bg-opacity-50">
-              <div className="bg-white p-4 sm:p-6 rounded-t-lg sm:rounded-lg w-full sm:w-[90%] max-w-lg relative">
+              <div className="bg-white p-8 sm:p-6 rounded-t-lg sm:rounded-lg w-full sm:w-[90%] max-w-lg relative">
                 <ContactForm
                   onClose={closeContactForm}
                   requireScreenshot={false}

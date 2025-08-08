@@ -32,7 +32,7 @@ export const ViewProduct = () => {
     onClick={() =>
     navigate(`/products?categoryId=${categoryId}&collectionId=${collectionId}`)
   }
-    className="absolute -left-12 bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition text-sm sm:text-base"
+    className="absolute left-[10px] sm:-left-10 bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition text-sm sm:text-base"
   >
     Back
   </button>
