@@ -114,7 +114,7 @@ export const ProductPage = () => {
             products.map((product) => (
               <div
                 key={product._id}
-                className="flex flex-col items-start text-left cursor-pointer bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+className="flex flex-col items-start mr-[42px] ml-[42px]  sm:mr-0 sm:ml-0  text-left cursor-pointer bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow border border-gray-200"
                 // onClick={() =>
                 //   (window.location.href = `/viewproduct/${product._id}`)
                 // }
