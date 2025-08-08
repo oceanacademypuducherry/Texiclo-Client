@@ -115,9 +115,11 @@ export const ProductPage = () => {
               <div
                 key={product._id}
                 className="flex flex-col items-start text-left cursor-pointer bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
-                onClick={() =>
-                  (window.location.href = `/viewproduct/${product._id}`)
-                }
+                // onClick={() =>
+                //   (window.location.href = `/viewproduct/${product._id}`)
+                // }
+                onClick={() => navigate(`/viewproduct/${product._id}?categoryId=${categoryId}&collectionId=${collectionId}`)}
+
               >
                 <img
                   src={product.variantInfo?.[0]?.variantImage}

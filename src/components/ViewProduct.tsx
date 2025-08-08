@@ -28,7 +28,10 @@ export const ViewProduct = () => {
        <div className="w-full px-4 sm:px-6 md:px-10 mt-0 relative flex items-center justify-center mb-20">
   {/* Back Button (left corner) */}
   <button
-    onClick={() => navigate(-1)}
+    // onClick={() => navigate(-1)}
+    onClick={() =>
+    navigate(`/products?categoryId=${categoryId}&collectionId=${collectionId}`)
+  }
     className="absolute -left-12 bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition text-sm sm:text-base"
   >
     Back
