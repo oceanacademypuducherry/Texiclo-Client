@@ -63,34 +63,18 @@ const onSubmit = async (data: any) => {
   try {
     setSubmitting(true);
 
-    const formData = new FormData();
-
-    // Append regular fields
-    formData.append('name', data.name);
-    formData.append('type', data.type);
-    formData.append('mobile', data.mobile);
-    formData.append('subject', data.subject);
-    formData.append('message', data.message);
-
-    // Append screenshot if required
+    // Add screenshot and PDF if present
     if (image && requireScreenshot) {
-      // Convert base64 to Blob
-      const res = await fetch(image);
-      const blob = await res.blob();
-      formData.append('screenshot', blob, 'screenshot.png');
+      data.screenshot = image;
     }
-
-    // Append PDF if available
     if (pdfUrl) {
-      const res = await fetch(pdfUrl);
-      const blob = await res.blob();
-      formData.append('pdf', blob, 'attachment.pdf');
+      data.pdfUrl = pdfUrl;
     }
 
-    // Send POST request with FormData
-    const response = await userAPI.post('contact', formData, {
+    // Send POST request using Axios
+    const response = await userAPI.post('contact/contact', data, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json',
       },
     });
 
@@ -113,7 +97,6 @@ const onSubmit = async (data: any) => {
     setSubmitting(false);
   }
 };
-
 
 
 
@@ -189,7 +172,8 @@ const onSubmit = async (data: any) => {
           <img
             src={image}
             alt="Estimation Screenshot"
-            className="max-w-full max-h-[300px] rounded border"
+            className="max-w-full sm:max-h-[300px] rounded border p-2"
+
           />
         </>
       )}

@@ -8,7 +8,7 @@ import {
   ProductPage,
 } from "../Pages";
 import { ViewProduct } from "../components/ViewProduct";
-import { ProductPages } from "../components";
+
 
 
 
@@ -20,5 +20,5 @@ export const router = createBrowserRouter([
   { path: "/estimation", element: <EstimationPage /> },
   { path: "/collection", element: <CollectionPage /> },
   { path: "/viewproduct/:productId", element: <ViewProduct /> },
-  { path: "/product", element: <ProductPages /> },
+  
 ]);
